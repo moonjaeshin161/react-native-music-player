@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>551285492509-m9ih3vd0qir6f1qjlmu096iecv7s9m1q.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.551285492509-m9ih3vd0qir6f1qjlmu096iecv7s9m1q</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>551285492509-o4ebpf46i167emotv6qqs19pbhc0d305.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAudlSbFoF3FuqHPC3LMo6xkfgGl82wHBk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>551285492509</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.musicPlayerApp</string>
+	<key>PROJECT_ID</key>
+	<string>react-native-music-playe-f6edb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>react-native-music-playe-f6edb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:551285492509:ios:7f95d25dacf733400f6ff4</string>
+	<key>DATABASE_URL</key>
+	<string>https://react-native-music-playe-f6edb.firebaseio.com</string>
+</dict>
+</plist>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "551285492509",
+    "firebase_url": "https://react-native-music-playe-f6edb.firebaseio.com",
+    "project_id": "react-native-music-playe-f6edb",
+    "storage_bucket": "react-native-music-playe-f6edb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551285492509:android:2958bdf785d51a8d0f6ff4",
+        "android_client_info": {
+          "package_name": "com.musicplayerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "551285492509-o4ebpf46i167emotv6qqs19pbhc0d305.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.musicplayerapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "551285492509-geclg81gvgsssc6pbphjom21chvp31i6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB232oeQr5WWZpp5PZ8JukDPY6tMK4m6LQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "551285492509-geclg81gvgsssc6pbphjom21chvp31i6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
