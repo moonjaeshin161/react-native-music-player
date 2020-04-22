@@ -1,14 +1,13 @@
 import React from 'react';
-import {
-  View,
-  Text
-} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import AppTab from './navigations/AppTab';
+import { navigationRef } from './navigations/RootNavigation';
 
 const App = () => {
   return (
-    <View>
-      <Text>Hello World</Text>
-    </View>
+    <NavigationContainer ref={navigationRef}>
+      <AppTab />
+    </NavigationContainer>
   );
 };
 
