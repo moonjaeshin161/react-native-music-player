@@ -1,35 +1,44 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { moderateScale } from 'react-native-size-matters';
 
-import TrackPlayer, { TrackPlayerEvents, STATE_PLAYING } from 'react-native-track-player';
+import TrackPlayer, { TrackPlayerEvents } from 'react-native-track-player';
 import { useTrackPlayerEvents } from 'react-native-track-player/index';
+
+import { setCurrentSong } from '../views/musicPlayer/PlayerActions';
 
 const events = [
     TrackPlayerEvents.PLAYBACK_STATE,
     TrackPlayerEvents.PLAYBACK_ERROR,
-
 ];
 
 const Controller = () => {
 
     const [playerState, setState] = useState(null);
+    const dispatch = useDispatch();
 
-    useTrackPlayerEvents(events, (event) => {
+    useTrackPlayerEvents(events, async (event) => {
         if (event.type === TrackPlayerEvents.PLAYBACK_ERROR) {
             console.warn('An error occurred while playing the current track.');
         }
         if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
-            setState(event.state)
+            await setState(event.state);
+            if (event.state !== 'paused') {
+                let trackId = await TrackPlayer.getCurrentTrack();
+                let trackObject = await TrackPlayer.getTrack(trackId);
+                dispatch(setCurrentSong(trackObject));
+
+            }
         }
     });
 
-    const playHandler = () => {
+    const playHandler = async () => {
         TrackPlayer.play();
     }
 
-    const pauseHandler = () => {
+    const pauseHandler = async () => {
         TrackPlayer.pause();
     }
 
@@ -43,7 +52,7 @@ const Controller = () => {
 
     return (
         <View style={styles.container}>
-            {console.log(TrackPlayerEvents)}
+
             <AntDesign name='stepbackward' size={moderateScale(50)} onPress={previousHandler} />
             {
                 (playerState === 'playing')
@@ -51,6 +60,7 @@ const Controller = () => {
                     : <AntDesign name='play' size={moderateScale(50)} onPress={playHandler} />
             }
             <AntDesign name='stepforward' size={moderateScale(50)} onPress={nextHandler} />
+
         </View>
     );
 }

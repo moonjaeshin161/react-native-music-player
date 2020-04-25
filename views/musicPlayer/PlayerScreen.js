@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import TrackPlayer from 'react-native-track-player';
 
 import Controller from '../../components/Controller';
-
+import CardMusic from '../../components/CardMusic';
 
 const PlayerScreen = () => {
 
@@ -37,7 +38,10 @@ const PlayerScreen = () => {
     }
 
     return (
-        <Controller />
+        <View>
+            <CardMusic />
+            <Controller />
+        </View>
     )
 
 }
