@@ -9,8 +9,8 @@ const Stack = createStackNavigator();
 const MusicPlayerStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name='Player' component={PlayerScreen} />
             <Stack.Screen name='MusicList' component={ListMusicScreen} />
+            <Stack.Screen name='Player' component={PlayerScreen} />
         </Stack.Navigator>
     )
 }
