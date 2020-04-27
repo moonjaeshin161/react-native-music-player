@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import TrackPlayer from 'react-native-track-player';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import Controller from '../../components/Controller';
 import CardMusic from '../../components/CardMusic';
@@ -40,6 +41,7 @@ const PlayerScreen = () => {
 
     return (
         <View>
+            <AntDesign name='ellipsis1' />
             <CardMusic />
             <Controller />
             <SeekBar />
