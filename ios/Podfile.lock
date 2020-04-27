@@ -370,6 +370,8 @@ PODS:
     - React
   - RNGestureHandler (1.6.1):
     - React
+  - RNReactNativeGetMusicFiles (1.0.0):
+    - React
   - RNReanimated (1.8.0):
     - React
   - RNScreens (2.5.0):
@@ -433,6 +435,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReactNativeGetMusicFiles (from `../node_modules/react-native-get-music-files/ios`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -526,6 +529,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNReactNativeGetMusicFiles:
+    :path: "../node_modules/react-native-get-music-files/ios"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -589,6 +594,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 71fc32d971f03b7f03d6ab6b86b730c4ee64f5b6
   RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNReactNativeGetMusicFiles: 0d1fa2a85d1eaa66c7cf23614eea6a7a2f283224
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
   RNScreens: ac02d0e4529f08ced69f5580d416f968a6ec3a1d
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
