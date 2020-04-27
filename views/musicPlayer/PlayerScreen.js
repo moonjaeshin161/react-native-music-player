@@ -5,6 +5,7 @@ import TrackPlayer from 'react-native-track-player';
 
 import Controller from '../../components/Controller';
 import CardMusic from '../../components/CardMusic';
+import SeekBar from '../../components/SeekBar';
 
 const PlayerScreen = () => {
 
@@ -18,7 +19,7 @@ const PlayerScreen = () => {
     const setupPlayer = async () => {
         await TrackPlayer.setupPlayer();
         TrackPlayer.updateOptions({
-            stopWithApp: false,
+            stopWithApp: true,
             capabilities: [
                 TrackPlayer.CAPABILITY_PLAY,
                 TrackPlayer.CAPABILITY_PAUSE,
@@ -41,6 +42,7 @@ const PlayerScreen = () => {
         <View>
             <CardMusic />
             <Controller />
+            <SeekBar />
         </View>
     )
 
