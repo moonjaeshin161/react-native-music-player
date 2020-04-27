@@ -5,7 +5,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { moderateScale } from 'react-native-size-matters';
 
 import TrackPlayer, { TrackPlayerEvents } from 'react-native-track-player';
-import { useTrackPlayerEvents } from 'react-native-track-player/index';
 
 import { setCurrentSong } from '../views/musicPlayer/PlayerActions';
 
@@ -16,15 +15,15 @@ const events = [
 
 const Controller = () => {
 
-    const [playerState, setState] = useState(null);
+    const [playerState, setPlayerState] = useState(null);
     const dispatch = useDispatch();
 
-    useTrackPlayerEvents(events, async (event) => {
+    TrackPlayer.useTrackPlayerEvents(events, async (event) => {
         if (event.type === TrackPlayerEvents.PLAYBACK_ERROR) {
             console.warn('An error occurred while playing the current track.');
         }
         if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
-            await setState(event.state);
+            await setPlayerState(event.state);
             if (event.state !== 'paused') {
                 let trackId = await TrackPlayer.getCurrentTrack();
                 let trackObject = await TrackPlayer.getTrack(trackId);

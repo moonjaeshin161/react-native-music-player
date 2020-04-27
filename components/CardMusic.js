@@ -17,9 +17,11 @@ const CardMusic = () => {
 
     return (
         <View style={styles.container}>
+
             <Image style={styles.thumbnail} source={DefaultThumbnail} />
             <Text style={styles.itemName}>{currentSong.title ? cutText(currentSong.title) : 'Song Name'}</Text>
             <Text style={styles.itemArtist}>{currentSong.artist ? cutText(currentSong.artist) : 'Artist'}</Text>
+
         </View >
     )
 }
