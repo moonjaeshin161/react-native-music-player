@@ -19,7 +19,7 @@ const SeekBar = () => {
 
     return (
         <View style={styles.container}>
-            {console.log('Duration: ', duration)}
+
             <View style={styles.itemDuration}>
                 <Text>{elapsed[0] + ":" + elapsed[1]}</Text>
                 <Text>{remaining[0] + ":" + remaining[1]}</Text>

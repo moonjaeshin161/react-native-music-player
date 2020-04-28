@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { moderateScale } from 'react-native-size-matters';
 
-import TrackPlayer, { TrackPlayerEvents } from 'react-native-track-player';
+import TrackPlayer, { TrackPlayerEvents, STATE_PLAYING, STATE_PAUSED } from 'react-native-track-player';
 
 import { setCurrentSong } from '../views/musicPlayer/PlayerActions';
 
@@ -16,6 +16,9 @@ const events = [
 const Controller = () => {
 
     const [playerState, setPlayerState] = useState(null);
+    const currentSong = useSelector(state => state.player.currentSong);
+    const list = useSelector(state => state.player.list);
+
     const dispatch = useDispatch();
 
     TrackPlayer.useTrackPlayerEvents(events, async (event) => {
@@ -24,11 +27,10 @@ const Controller = () => {
         }
         if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
             await setPlayerState(event.state);
-            if (event.state !== 'paused') {
+            if (event.state !== STATE_PAUSED) {
                 let trackId = await TrackPlayer.getCurrentTrack();
                 let trackObject = await TrackPlayer.getTrack(trackId);
                 dispatch(setCurrentSong(trackObject));
-
             }
         }
     });
@@ -41,12 +43,18 @@ const Controller = () => {
         TrackPlayer.pause();
     }
 
-    const nextHandler = () => {
+    const nextHandler = async () => {
+        const nextTrackID = await (parseInt(currentSong.id) + 1).toString();
+        await TrackPlayer.add(list[nextTrackID]);
+        dispatch(setCurrentSong(list[nextTrackID]));
         TrackPlayer.skipToNext();
     }
 
-    const previousHandler = () => {
-        TrackPlayer.skipToPrevious();
+    const previousHandler = async () => {
+        const previousTrackID = await (parseInt(currentSong.id) - 1).toString();
+        await TrackPlayer.add(list[previousTrackID]);
+        dispatch(setCurrentSong(list[previousTrackID]));
+        TrackPlayer.skipToNext();
     }
 
     return (
@@ -54,7 +62,7 @@ const Controller = () => {
 
             <AntDesign name='stepbackward' size={moderateScale(50)} onPress={previousHandler} />
             {
-                (playerState === 'playing')
+                (playerState === STATE_PLAYING)
                     ? <AntDesign name='pausecircle' size={moderateScale(50)} onPress={pauseHandler} />
                     : <AntDesign name='play' size={moderateScale(50)} onPress={playHandler} />
             }

@@ -18,6 +18,7 @@ const PlayerScreen = () => {
     useEffect(() => {
         setupPlayer();
         fetchMusic();
+        TrackPlayer.play();
     }, [])
 
     const setupPlayer = async () => {

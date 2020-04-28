@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
@@ -13,8 +13,8 @@ const MusicItem = ({ item }) => {
     const dispatch = useDispatch();
 
     const pressHandler = () => {
-        navigation.navigate('Player');
         dispatch(setCurrentSong(item));
+        navigation.navigate('Player');
     }
 
     return (
