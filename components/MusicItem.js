@@ -32,10 +32,10 @@ const MusicItem = ({ item }) => {
 const styles = StyleSheet.create({
     container: {
         borderColor: colors.gray,
-        borderWidth: scale(0.5)
+        borderWidth: scale(0.5),
     },
     listItem: {
-        paddingLeft: scale(10),
+        paddingLeft: scale(5),
         flexDirection: 'row'
     },
     title: {
