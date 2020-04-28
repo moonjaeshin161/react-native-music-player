@@ -86,7 +86,6 @@ const ListMusicScreen = () => {
         }
 
         MusicFiles.getAll(options).then(tracks => {
-            console.log(tracks);
             const musics = tracks.map((music, index) => {
                 if (!music.title) {
                     let newTitle = music.fileName.split('.')[0];
