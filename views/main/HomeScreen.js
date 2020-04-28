@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     subTitle: {
         fontSize: scale(22),
         fontWeight: '400',
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: scale(5)
     },
     listContainer: {
         paddingTop: verticalScale(10)

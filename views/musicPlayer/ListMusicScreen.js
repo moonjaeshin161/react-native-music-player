@@ -4,15 +4,17 @@ import MusicFiles from 'react-native-get-music-files';
 import { useSelector, useDispatch } from 'react-redux';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { scale } from 'react-native-size-matters';
+import { scale, moderateScale } from 'react-native-size-matters';
+import TrackPlayer from 'react-native-track-player';
 
-import { setSongList } from './PlayerActions';
 import MusicItem from '../../components/MusicItem';
+import MiniPlayer from '../../components/MiniPlayer';
+import { setSongList } from './PlayerActions';
 import { colors } from '../../configs/colors';
 
 const ListMusicScreen = () => {
 
-    const readPermission = useSelector(state => state.player.readPermission);
+    const [readPermission, setReadPermission] = useState(false);
     const list = useSelector(state => state.player.list);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -20,7 +22,10 @@ const ListMusicScreen = () => {
 
     useEffect(() => {
         checkPermission();
-    }, []);
+        if (readPermission) {
+            setupPlayer();
+        }
+    }, [readPermission]);
 
     const checkPermission = async () => {
         check(
@@ -41,6 +46,7 @@ const ListMusicScreen = () => {
                 case RESULTS.GRANTED:
                     setIsLoading(true);
                     fetchMusic();
+                    setReadPermission(true);
                     break;
                 case RESULTS.BLOCKED:
                     console.log('The permission is denied and not requestable anymore');
@@ -71,6 +77,7 @@ const ListMusicScreen = () => {
                     break;
                 case RESULTS.GRANTED:
                     fetchMusic();
+                    setReadPermission(true);
                     break;
                 case RESULTS.BLOCKED:
                     console.log('The permission is denied and not requestable anymore');
@@ -92,7 +99,6 @@ const ListMusicScreen = () => {
         }
 
         MusicFiles.getAll(options).then(tracks => {
-            console.log('Tracks: ', tracks);
             const musics = tracks.map((music, index) => {
                 if (!music.title) {
                     let newTitle = (music.fileName.split('.')[0]).substring(0, 20);
@@ -108,6 +114,28 @@ const ListMusicScreen = () => {
             console.log('Error when fetching music: ', errors);
             setIsLoading(false);
         })
+    }
+
+    const setupPlayer = async () => {
+        await TrackPlayer.setupPlayer();
+        console.log('Success')
+        TrackPlayer.updateOptions({
+            stopWithApp: true,
+            capabilities: [
+                TrackPlayer.CAPABILITY_PLAY,
+                TrackPlayer.CAPABILITY_PAUSE,
+                TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+                TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+                TrackPlayer.CAPABILITY_STOP
+            ],
+            compactCapabilities: [
+                TrackPlayer.CAPABILITY_PLAY,
+                TrackPlayer.CAPABILITY_PAUSE,
+                TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
+                TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+                TrackPlayer.CAPABILITY_STOP
+            ]
+        });
     }
 
     return (
@@ -127,8 +155,10 @@ const ListMusicScreen = () => {
                             renderItem={({ item }) => <MusicItem item={item} />}
                             keyExtractor={item => item.id}
                         />
+                        <MiniPlayer style={styles.miniPlayer} />
                     </>
             }
+
         </View>
     )
 }
@@ -138,6 +168,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        height: '100%'
     },
     title: {
         fontSize: scale(20),
@@ -148,6 +179,12 @@ const styles = StyleSheet.create({
     },
     musicItem: {
         width: '100%',
+    },
+    miniPlayer: {
+        position: 'absolute',
+        bottom: 0,
+        borderRadius: moderateScale(10),
+        borderColor: 'black'
     }
 })
 
