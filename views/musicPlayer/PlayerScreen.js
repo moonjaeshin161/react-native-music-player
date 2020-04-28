@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import TrackPlayer from 'react-native-track-player';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { moderateScale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 
 import Controller from '../../components/Controller';
 import CardMusic from '../../components/CardMusic';
@@ -10,6 +13,7 @@ import SeekBar from '../../components/SeekBar';
 const PlayerScreen = () => {
 
     const currentSong = useSelector(state => state.player.currentSong);
+    const navigation = useNavigation();
 
     useEffect(() => {
         setupPlayer();
@@ -43,8 +47,13 @@ const PlayerScreen = () => {
         await TrackPlayer.add(currentSong);
     }
 
+    const navigateList = () => {
+        navigation.goBack();
+    }
+
     return (
         <View>
+            <AntDesign name='down' size={moderateScale(35)} onPress={navigateList} />
             <CardMusic />
             <Controller />
             <SeekBar />

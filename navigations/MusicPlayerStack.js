@@ -8,7 +8,11 @@ const Stack = createStackNavigator();
 
 const MusicPlayerStack = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false
+            }}
+        >
             <Stack.Screen name='MusicList' component={ListMusicScreen} />
             <Stack.Screen name='Player' component={PlayerScreen} />
         </Stack.Navigator>
