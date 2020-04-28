@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import TrackPlayer from 'react-native-track-player';
-import { useNavigation } from '@react-navigation/native';
 
 import Controller from '../../components/Controller';
 import CardMusic from '../../components/CardMusic';
