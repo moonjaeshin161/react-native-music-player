@@ -4,6 +4,7 @@ import MusicFiles from 'react-native-get-music-files';
 import { useSelector, useDispatch } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { scale, moderateScale } from 'react-native-size-matters';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import MusicItem from '../../components/MusicItem';
 import MiniPlayer from '../../components/MiniPlayer';
@@ -15,19 +16,19 @@ import { setupPlayer } from '../../utils';
 
 const ListMusicScreen = () => {
 
-    const list = useSelector(state => state.player.list);
-    const readPermission = useSelector(state => state.player.readPermission);
+    const [list, setList] = useState([]);
+    const [loadList, setLoadList] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const readPermission = useSelector(state => state.player.readPermission);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log(readPermission);
         if (readPermission) {
             setupPlayer();
-            fetchMusic();
+            loadLocalMusic();
         }
-    }, [])
+    }, [loadList])
 
     const fetchMusic = async () => {
         setIsLoading(true);
@@ -41,7 +42,7 @@ const ListMusicScreen = () => {
             fields: ['title', 'albumTitle', 'genre', 'lyrics', 'artwork', 'duration']
         }
 
-        MusicFiles.getAll(options).then(tracks => {
+        MusicFiles.getAll(options).then(async (tracks) => {
             const musics = tracks.map((music, index) => {
                 if (!music.title) {
                     let newTitle = (music.fileName.split('.')[0]).substring(0, 20);
@@ -51,11 +52,24 @@ const ListMusicScreen = () => {
                 return { ...music, id: index.toString(), url: music.path, artist: music.author }
             })
             dispatch(setSongList(musics));
+            setList(musics);
+            setLoadList(true);
+            await AsyncStorage.setItem('list', JSON.stringify(musics));
             setIsLoading(false);
         }).catch(errors => {
             console.log('Error when fetching music: ', errors);
             setIsLoading(false);
         })
+    }
+
+    const loadLocalMusic = async () => {
+        const data = await AsyncStorage.getItem('list');
+        await setList(JSON.parse(data));
+        if (!data) {
+            fetchMusic();
+        }
+        setLoadList(true);
+        dispatch(setSongList(JSON.parse(data)));
     }
 
     return (
@@ -64,21 +78,14 @@ const ListMusicScreen = () => {
                 visible={isLoading}
                 textStyle={styles.spinnerTextStyle}
             />
-            {
-                (list.length === 0)
-                    ? <Text>Song Not Found</Text>
-                    : <>
-                        <Text style={styles.title}>Song List</Text>
-                        <FlatList
-                            style={styles.musicItem}
-                            data={list}
-                            renderItem={({ item }) => <MusicItem item={item} />}
-                            keyExtractor={item => item.id}
-                        />
-                        <MiniPlayer style={styles.miniPlayer} />
-                    </>
-            }
-
+            <Text style={styles.title}>Song List</Text>
+            <FlatList
+                style={styles.musicItem}
+                data={list}
+                renderItem={({ item }) => <MusicItem item={item} />}
+                keyExtractor={item => item.id}
+            />
+            <MiniPlayer style={styles.miniPlayer} />
         </View>
     )
 }
