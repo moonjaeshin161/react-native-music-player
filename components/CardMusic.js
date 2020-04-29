@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { useSelector } from 'react-redux';
 
 import DefaultThumbnail from '../assets/images/default_thumbnail.jpg';
 
-const CardMusic = () => {
+const CardMusic = ({ currentSong }) => {
 
-    const currentSong = useSelector(state => state.player.currentSong);
+    const { title, artist } = currentSong;
 
     const cutText = (string) => {
         let newString = string.substring(0, 25);
@@ -17,10 +16,9 @@ const CardMusic = () => {
 
     return (
         <View style={styles.container}>
-            {console.log('Title: ', currentSong.title)}
             <Image style={styles.thumbnail} source={DefaultThumbnail} />
-            <Text style={styles.itemName}>{currentSong.title ? cutText(currentSong.title) : 'Song Name'}</Text>
-            <Text style={styles.itemArtist}>{currentSong.artist ? cutText(currentSong.artist) : 'Artist'}</Text>
+            <Text style={styles.itemName}>{title ? cutText(title) : 'Song Name'}</Text>
+            <Text style={styles.itemArtist}>{artist ? artist : 'Artist'}</Text>
 
         </View >
     )

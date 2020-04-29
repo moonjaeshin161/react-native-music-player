@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Image, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { verticalScale, scale, moderateScale } from 'react-native-size-matters';
 import { useSelector, useDispatch } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
-import TrackPlayer, { TrackPlayerEvents, STATE_PLAYING, STATE_PAUSED } from 'react-native-track-player';
+import TrackPlayer, { TrackPlayerEvents, STATE_PLAYING } from 'react-native-track-player';
+import Modal from 'react-native-modal';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
+import PlayerModal from '../views/musicPlayer/PlayerModal'
 import MiniThumbnail from '../assets/images/default_mini_thumbnail.png';
 import { setCurrentSong } from '../views/musicPlayer/PlayerActions';
 
@@ -18,11 +21,17 @@ const events = [
     TrackPlayerEvents.REMOTE_STOP
 ];
 
+const deviceWidth = ExtraDimensions.getRealWindowWidth();
+const deviceHeight = ExtraDimensions.getRealWindowHeight();
+
 const MiniPlayer = () => {
 
     const currentSong = useSelector(state => state.player.currentSong);
     const list = useSelector(state => state.player.list);
     const [playerState, setPlayerState] = useState(null);
+    const [isVisible, setIsVisible] = useState(false);
+    const { position, duration } = TrackPlayer.useTrackPlayerProgress();
+
     const dispatch = useDispatch();
 
     const { title, artist } = currentSong;
@@ -57,7 +66,6 @@ const MiniPlayer = () => {
             TrackPlayer.add(currentSong);
             TrackPlayer.play();
         }
-        console.log('Rendering...');
     }, [currentSong.id])
 
     const playHandler = () => {
@@ -72,25 +80,51 @@ const MiniPlayer = () => {
     }
 
     const nextHandler = async () => {
-        if (currentSong.id) {
+        if (currentSong.id === (list.length - 1).toString()) {
+            console.log('Mini Player: No next song');
+        }
+        else if (currentSong.id) {
             const nextTrackID = await (parseInt(currentSong.id) + 1).toString();
             await TrackPlayer.add(list[nextTrackID]);
             dispatch(setCurrentSong(list[nextTrackID]));
             TrackPlayer.skipToNext();
         }
+
     }
 
     const previousHandler = async () => {
-        if (currentSong.id) {
+        if (currentSong.id === '0') {
+            console.log('Mini Player: No previous song');
+        }
+        else if (currentSong.id) {
             const previousTrackID = await (parseInt(currentSong.id) - 1).toString();
             await TrackPlayer.add(list[previousTrackID]);
             dispatch(setCurrentSong(list[previousTrackID]));
             TrackPlayer.skipToNext();
         }
+
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={() => setIsVisible(true)}>
+            <Modal
+                isVisible={isVisible}
+                deviceWidth={deviceWidth}
+                deviceHeight={deviceHeight}
+                style={{ margin: 0 }}
+            >
+                <PlayerModal
+                    setIsVisible={setIsVisible}
+                    playerState={playerState}
+                    previousHandler={previousHandler}
+                    pauseHandler={pauseHandler}
+                    playHandler={playHandler}
+                    nextHandler={nextHandler}
+                    currentSong={currentSong}
+                    position={position}
+                    duration={duration}
+                />
+            </Modal>
             <Image source={MiniThumbnail} style={styles.miniThumb} />
             <View style={styles.titleContainer}>
                 <Text style={styles.titleSong}>{title ? title : 'Song Name'}</Text>
@@ -114,7 +148,7 @@ const MiniPlayer = () => {
                 }
                 <Entypo name='controller-next' style={{ marginLeft: moderateScale(7) }} size={moderateScale(35)} onPress={nextHandler} />
             </View>
-        </SafeAreaView>
+        </TouchableOpacity>
     )
 }
 
