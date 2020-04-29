@@ -1,9 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
-import { } from 'react-native-safe-area-context';
+import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import { useDispatch } from 'react-redux';
+import { verifyPermission } from '../musicPlayer/PlayerActions';
 
 const HomeScreen = () => {
+
+    const [result, setResult] = useState(null);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        checkPermission();
+        if (result === RESULTS.DENIED) {
+            requestPermission();
+        }
+        dispatch(verifyPermission(result));
+    }, [result]);
+
+    const checkPermission = async () => {
+        let checkResult = await check(
+            Platform.select({
+                android: PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+                ios: PERMISSIONS.IOS.MEDIA_LIBRARY
+            })
+        );
+        await setResult(checkResult);
+    }
+
+    const requestPermission = async () => {
+        let requestResult = await request(
+            Platform.select({
+                android: PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+                ios: PERMISSIONS.IOS.MEDIA_LIBRARY
+            })
+        );
+        await setResult(requestResult);
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Bài tập lớn - App nghe nhạc</Text>
