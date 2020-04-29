@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Bài tập lớn - App nghe nhạc</Text>
             <Text style={styles.subTitle}>Các thành viên trong nhóm</Text>
             <View style={styles.listContainer}>
@@ -14,7 +15,7 @@ const HomeScreen = () => {
                 <Text style={styles.member}>Doãn Đoàn Đại Hùng</Text>
                 <Text style={styles.member}>Kiều Thanh Phong</Text>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
