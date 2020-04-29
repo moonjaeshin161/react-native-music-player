@@ -28,13 +28,11 @@ const MiniPlayer = () => {
     const { title, artist } = currentSong;
 
     TrackPlayer.useTrackPlayerEvents(events, async (event) => {
-        console.log('EVENT TYPE: ', event.type);
         if (event.type === TrackPlayerEvents.PLAYBACK_ERROR) {
             console.warn('An error occurred while playing the current track.');
         }
         if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
             await setPlayerState(event.state);
-            console.log('Player state: ', playerState);
         }
     });
 
