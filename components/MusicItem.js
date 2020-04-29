@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useDispatch } from 'react-redux';
 
