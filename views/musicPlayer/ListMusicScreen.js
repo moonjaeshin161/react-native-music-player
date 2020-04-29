@@ -105,7 +105,7 @@ const ListMusicScreen = () => {
                     music.title = newTitle;
                 }
                 music.title = music.title.substring(0, 20);
-                return { ...music, id: index.toString(), url: music.path }
+                return { ...music, id: index.toString(), url: music.path, artist: music.author }
             })
             dispatch(setSongList(musics));
 
