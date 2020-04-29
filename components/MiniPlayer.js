@@ -72,17 +72,21 @@ const MiniPlayer = () => {
     }
 
     const nextHandler = async () => {
-        const nextTrackID = await (parseInt(currentSong.id) + 1).toString();
-        await TrackPlayer.add(list[nextTrackID]);
-        dispatch(setCurrentSong(list[nextTrackID]));
-        TrackPlayer.skipToNext();
+        if (currentSong.id) {
+            const nextTrackID = await (parseInt(currentSong.id) + 1).toString();
+            await TrackPlayer.add(list[nextTrackID]);
+            dispatch(setCurrentSong(list[nextTrackID]));
+            TrackPlayer.skipToNext();
+        }
     }
 
     const previousHandler = async () => {
-        const previousTrackID = await (parseInt(currentSong.id) - 1).toString();
-        await TrackPlayer.add(list[previousTrackID]);
-        dispatch(setCurrentSong(list[previousTrackID]));
-        TrackPlayer.skipToNext();
+        if (currentSong.id) {
+            const previousTrackID = await (parseInt(currentSong.id) - 1).toString();
+            await TrackPlayer.add(list[previousTrackID]);
+            dispatch(setCurrentSong(list[previousTrackID]));
+            TrackPlayer.skipToNext();
+        }
     }
 
     return (
