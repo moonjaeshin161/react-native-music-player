@@ -34,6 +34,21 @@ const MiniPlayer = () => {
         if (event.type === TrackPlayerEvents.PLAYBACK_STATE) {
             await setPlayerState(event.state);
         }
+        if (event.type === TrackPlayerEvents.REMOTE_PLAY) {
+            TrackPlayer.play();
+        }
+        if (event.type === TrackPlayerEvents.REMOTE_PAUSE) {
+            TrackPlayer.pause()
+        }
+        if (event.type === TrackPlayerEvents.REMOTE_PREVIOUS) {
+            previousHandler();
+        }
+        if (event.type === TrackPlayerEvents.REMOTE_NEXT) {
+            nextHandler();
+        }
+        if (event.type === TrackPlayerEvents.REMOTE_STOP) {
+            TrackPlayer.destroy();
+        }
     });
 
     useEffect(() => {
@@ -42,6 +57,7 @@ const MiniPlayer = () => {
             TrackPlayer.add(currentSong);
             TrackPlayer.play();
         }
+        console.log('Rendering...');
     }, [currentSong.id])
 
     const playHandler = () => {
