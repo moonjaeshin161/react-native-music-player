@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import MusicFiles from 'react-native-get-music-files';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { scale, moderateScale } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import MusicItem from '../../components/MusicItem';
 import MiniPlayer from '../../components/MiniPlayer';
-import {
-    setSongList
-} from './PlayerActions';
+import Header from '../../components/Header';
+import SearchBar from '../../components/SearchBar';
+
 import { colors } from '../../configs/colors';
 import { setupPlayer } from '../../utils';
 
 const ListMusicScreen = () => {
 
     const [list, setList] = useState([]);
+    const [sortedList, setSortedList] = useState([]);
     const [loadList, setLoadList] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const readPermission = useSelector(state => state.player.readPermission);
-
-    const dispatch = useDispatch();
+    const [isSearched, setIsSearched] = useState(false);
 
     useEffect(() => {
         if (readPermission) {
@@ -51,8 +51,8 @@ const ListMusicScreen = () => {
                 music.title = music.title.substring(0, 20);
                 return { ...music, id: index.toString(), url: music.path, artist: music.author }
             })
-            dispatch(setSongList(musics));
             setList(musics);
+            setSortedList(musics);
             setLoadList(true);
             await AsyncStorage.setItem('list', JSON.stringify(musics));
             setIsLoading(false);
@@ -64,37 +64,38 @@ const ListMusicScreen = () => {
 
     const loadLocalMusic = async () => {
         const data = await AsyncStorage.getItem('list');
-        await setList(JSON.parse(data));
+        setList(JSON.parse(data));
+        setSortedList(JSON.parse(data));
         if (!data) {
             fetchMusic();
         }
         setLoadList(true);
-        dispatch(setSongList(JSON.parse(data)));
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Spinner
                 visible={isLoading}
                 textStyle={styles.spinnerTextStyle}
             />
-            <Text style={styles.title}>Song List</Text>
+            {
+                !isSearched ? <Header setIsSearched={setIsSearched} />
+                    : <SearchBar setSortedList={setSortedList} list={list} />
+            }
             <FlatList
                 style={styles.musicItem}
-                data={list}
+                data={sortedList}
                 renderItem={({ item }) => <MusicItem item={item} />}
                 keyExtractor={item => item.id}
             />
-            <MiniPlayer style={styles.miniPlayer} />
-        </View>
+            <MiniPlayer style={styles.miniPlayer} list={list} />
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         height: '100%'
     },
     title: {

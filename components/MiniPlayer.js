@@ -24,10 +24,9 @@ const events = [
 const deviceWidth = ExtraDimensions.getRealWindowWidth();
 const deviceHeight = ExtraDimensions.getRealWindowHeight();
 
-const MiniPlayer = () => {
+const MiniPlayer = ({ list }) => {
 
     const currentSong = useSelector(state => state.player.currentSong);
-    const list = useSelector(state => state.player.list);
     const [playerState, setPlayerState] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
     const { position, duration } = TrackPlayer.useTrackPlayerProgress();
