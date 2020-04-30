@@ -19,10 +19,6 @@ const SeekBar = ({ position, duration }) => {
         TrackPlayer.play();
     };
 
-    useState(() => {
-        console.log('Is seek: ', isSeek);
-    }, [isSeek])
-
     return (
         <View style={styles.container}>
 
@@ -40,13 +36,15 @@ const SeekBar = ({ position, duration }) => {
                 maximumValue={duration}
                 value={position}
                 onSlidingStart={() => TrackPlayer.pause()}
-                onSlidingComplete={handleSliding}
                 onValueChange={value => {
                     setIsSeek(true);
                     setChangedTime(minutesAndSeconds(value));
                 }
                 }
-                onSlidingComplete={() => setIsSeek(false)}
+                onSlidingComplete={(value) => {
+                    setIsSeek(false);
+                    handleSliding(value);
+                }}
             />
 
         </View>
