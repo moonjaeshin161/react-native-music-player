@@ -8,11 +8,12 @@ import CardMusic from '../../components/CardMusic';
 import SeekBar from '../../components/SeekBar';
 
 import { colors } from '../../configs/colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PlayerModal = ({ setIsVisible, playerState, previousHandler, pauseHandler, playHandler, nextHandler, currentSong, position, duration }) => {
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
 
             <AntDesign name='down' size={30} onPress={() => setIsVisible(false)} />
             <CardMusic currentSong={currentSong} />
@@ -25,7 +26,7 @@ const PlayerModal = ({ setIsVisible, playerState, previousHandler, pauseHandler,
             />
             <SeekBar position={position} duration={duration} />
 
-        </View>
+        </SafeAreaView>
     )
 
 }
