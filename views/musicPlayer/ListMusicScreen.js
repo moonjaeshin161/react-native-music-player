@@ -43,19 +43,25 @@ const ListMusicScreen = () => {
         }
 
         MusicFiles.getAll(options).then(async (tracks) => {
-            const musics = tracks.map((music, index) => {
-                if (!music.title) {
-                    let newTitle = (music.fileName.split('.')[0]).substring(0, 20);
-                    music.title = newTitle;
-                }
-                music.title = music.title.substring(0, 20);
-                return { ...music, id: index.toString(), url: music.path, artist: music.author }
-            })
-            setList(musics);
-            setSortedList(musics);
-            setLoadList(true);
-            await AsyncStorage.setItem('list', JSON.stringify(musics));
-            setIsLoading(false);
+            if (tracks !== null) {
+                const musics = await tracks.map((music, index) => {
+                    if (!music.title) {
+                        let newTitle = (music.fileName.split('.')[0]).substring(0, 20);
+                        music.title = newTitle;
+                    }
+                    music.title = music.title.substring(0, 20);
+                    return { ...music, id: index.toString(), url: music.path, artist: music.author }
+                })
+                setList(musics);
+                setSortedList(musics);
+                setLoadList(true);
+                await AsyncStorage.setItem('list', JSON.stringify(musics));
+                setIsLoading(false);
+            }
+            else {
+                console.log('There is no music file in your device');
+                setIsLoading(false);
+            }
         }).catch(errors => {
             console.log('Error when fetching music: ', errors);
             setIsLoading(false);

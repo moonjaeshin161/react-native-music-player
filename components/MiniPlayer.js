@@ -18,7 +18,8 @@ const events = [
     TrackPlayerEvents.REMOTE_PAUSE,
     TrackPlayerEvents.REMOTE_PREVIOUS,
     TrackPlayerEvents.REMOTE_NEXT,
-    TrackPlayerEvents.REMOTE_STOP
+    TrackPlayerEvents.REMOTE_STOP,
+    TrackPlayerEvents.PLAYBACK_QUEUE_ENDED
 ];
 
 const deviceWidth = ExtraDimensions.getRealWindowWidth();
@@ -29,6 +30,9 @@ const MiniPlayer = ({ list }) => {
     const currentSong = useSelector(state => state.player.currentSong);
     const [playerState, setPlayerState] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
+    const [replayType, setReplayType] = useState('no');
+    const [isRandom, setIsRandom] = useState(false);
+
     const { position, duration } = TrackPlayer.useTrackPlayerProgress();
 
     const dispatch = useDispatch();
@@ -49,13 +53,16 @@ const MiniPlayer = ({ list }) => {
             TrackPlayer.pause()
         }
         if (event.type === TrackPlayerEvents.REMOTE_PREVIOUS) {
-            previousHandler();
+            await previousHandler();
         }
         if (event.type === TrackPlayerEvents.REMOTE_NEXT) {
-            nextHandler();
+            await nextHandler();
         }
         if (event.type === TrackPlayerEvents.REMOTE_STOP) {
             TrackPlayer.destroy();
+        }
+        if (event.type === TrackPlayerEvents.PLAYBACK_QUEUE_ENDED) {
+            await nextHandler();
         }
     });
 
@@ -79,29 +86,31 @@ const MiniPlayer = ({ list }) => {
     }
 
     const nextHandler = async () => {
-        if (currentSong.id === (list.length - 1).toString()) {
-            console.log('Mini Player: No next song');
+        if (list !== null) {
+            if (currentSong.id === (list.length - 1).toString()) {
+                console.warn('Mini Player: No next song');
+            }
+            else if (currentSong.id) {
+                const nextTrackID = await (parseInt(currentSong.id) + 1).toString();
+                await TrackPlayer.add(list[nextTrackID]);
+                dispatch(setCurrentSong(list[nextTrackID]));
+                TrackPlayer.skipToNext();
+            }
         }
-        else if (currentSong.id) {
-            const nextTrackID = await (parseInt(currentSong.id) + 1).toString();
-            await TrackPlayer.add(list[nextTrackID]);
-            dispatch(setCurrentSong(list[nextTrackID]));
-            TrackPlayer.skipToNext();
-        }
-
     }
 
     const previousHandler = async () => {
-        if (currentSong.id === '0') {
-            console.log('Mini Player: No previous song');
+        if (list !== null) {
+            if (currentSong.id === '0') {
+                console.log('Mini Player: No previous song');
+            }
+            else if (currentSong.id) {
+                const previousTrackID = await (parseInt(currentSong.id) - 1).toString();
+                await TrackPlayer.add(list[previousTrackID]);
+                dispatch(setCurrentSong(list[previousTrackID]));
+                TrackPlayer.skipToNext();
+            }
         }
-        else if (currentSong.id) {
-            const previousTrackID = await (parseInt(currentSong.id) - 1).toString();
-            await TrackPlayer.add(list[previousTrackID]);
-            dispatch(setCurrentSong(list[previousTrackID]));
-            TrackPlayer.skipToNext();
-        }
-
     }
 
     return (
@@ -122,6 +131,10 @@ const MiniPlayer = ({ list }) => {
                     currentSong={currentSong}
                     position={position}
                     duration={duration}
+                    replayType={replayType}
+                    setReplayType={setReplayType}
+                    isRandom={isRandom}
+                    setIsRandom={setIsRandom}
                 />
             </Modal>
             <Image source={MiniThumbnail} style={styles.miniThumb} />
