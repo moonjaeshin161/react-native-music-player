@@ -10,7 +10,22 @@ import SeekBar from '../../components/SeekBar';
 import { colors } from '../../configs/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const PlayerModal = ({ setIsVisible, playerState, previousHandler, pauseHandler, playHandler, nextHandler, currentSong, position, duration }) => {
+const PlayerModal = (props) => {
+
+    const { setIsVisible,
+        playerState,
+        previousHandler,
+        pauseHandler,
+        playHandler,
+        nextHandler,
+        currentSong,
+        position,
+        duration,
+        replayType,
+        setReplayType,
+        isRandom,
+        setIsRandom
+    } = props;
 
     return (
         <SafeAreaView style={styles.container}>
@@ -23,6 +38,10 @@ const PlayerModal = ({ setIsVisible, playerState, previousHandler, pauseHandler,
                 pauseHandler={pauseHandler}
                 nextHandler={nextHandler}
                 playHandler={playHandler}
+                replayType={replayType}
+                setReplayType={setReplayType}
+                isRandom={isRandom}
+                setIsRandom={setIsRandom}
             />
             <SeekBar position={position} duration={duration} />
 
