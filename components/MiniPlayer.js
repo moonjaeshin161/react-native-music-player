@@ -87,11 +87,11 @@ const MiniPlayer = ({ list }) => {
 
     const nextHandler = async () => {
         if (list !== null) {
-            if (currentSong.id === (list.length - 1).toString()) {
+            if (currentSong.id === (list.length - 1).toString() && isRandom === false) {
                 console.warn('Mini Player: No next song');
             }
             else if (currentSong.id) {
-                const nextTrackID = await (parseInt(currentSong.id) + 1).toString();
+                const nextTrackID = isRandom ? await (Math.floor(Math.random() * list.length)).toString() : await (parseInt(currentSong.id) + 1).toString();
                 await TrackPlayer.add(list[nextTrackID]);
                 dispatch(setCurrentSong(list[nextTrackID]));
                 TrackPlayer.skipToNext();
