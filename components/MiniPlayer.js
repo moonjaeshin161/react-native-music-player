@@ -6,6 +6,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import TrackPlayer, { TrackPlayerEvents, STATE_PLAYING } from 'react-native-track-player';
 import Modal from 'react-native-modal';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import { showMessage } from "react-native-flash-message";
 
 import PlayerModal from '../views/musicPlayer/PlayerModal'
 import MiniThumbnail from '../assets/images/default_mini_thumbnail.png';
@@ -94,7 +95,10 @@ const MiniPlayer = ({ list }) => {
                     TrackPlayer.skipToNext();
                 }
                 else {
-                    console.warn('Mini Player: No next song');
+                    showMessage({
+                        message: "Mini Player: No next song",
+                        type: "info",
+                    });
                 }
             }
             else if (currentSong.id) {
@@ -115,7 +119,10 @@ const MiniPlayer = ({ list }) => {
     const previousHandler = async () => {
         if (list !== null) {
             if (currentSong.id === '0') {
-                console.log('Mini Player: No previous song');
+                showMessage({
+                    message: "Mini Player: No previous song",
+                    type: "info",
+                });
             }
             else if (currentSong.id) {
                 const previousTrackID = isRandom ? await (Math.floor(Math.random() * list.length)).toString() : await (parseInt(currentSong.id) - 1).toString();
