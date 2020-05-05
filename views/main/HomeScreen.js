@@ -56,16 +56,16 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignItems: 'center'
     },
     title: {
-        fontSize: scale(25),
+        fontSize: scale(27),
         fontWeight: '600',
-        textAlign: 'center'
+        fontFamily: 'BalooBhaina2-ExtraBold',
     },
     subTitle: {
         fontSize: scale(22),
         fontWeight: '400',
-        textAlign: 'center',
         marginTop: scale(5)
     },
     listContainer: {

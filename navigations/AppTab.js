@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeStack from './HomeStack';
 import MusicPlayerStack from './MusicPlayerStack';
 import Entypo from 'react-native-vector-icons/Entypo'
+import SettingStack from './SettingStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,11 +14,11 @@ const AppTab = () => (
                 let iconName;
 
                 if (route.name === 'Home') {
-                    iconName = focused
-                        ? 'home'
-                        : 'home';
+                    iconName = 'home'
                 } else if (route.name === 'MusicPlayer') {
-                    iconName = focused ? 'folder-music' : 'folder-music';
+                    iconName = 'folder-music';
+                } else if (route.name === 'Setting') {
+                    iconName = 'cog';
                 }
 
                 // You can return any component that you like here!
@@ -31,6 +32,7 @@ const AppTab = () => (
     >
         <Tab.Screen name='Home' component={HomeStack} />
         <Tab.Screen name='MusicPlayer' component={MusicPlayerStack} />
+        <Tab.Screen name='Setting' component={SettingStack} />
     </Tab.Navigator>
 )
 
