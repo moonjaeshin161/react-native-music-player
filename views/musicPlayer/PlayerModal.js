@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import TrackPlayer from 'react-native-track-player';
+import FlashMessage from "react-native-flash-message";
 
 import Controller from '../../components/Controller';
 import CardMusic from '../../components/CardMusic';
@@ -44,6 +44,8 @@ const PlayerModal = (props) => {
                 setIsRandom={setIsRandom}
             />
             <SeekBar position={position} duration={duration} />
+
+            <FlashMessage ref="modalFlash" position="top" />
 
         </SafeAreaView>
     )
