@@ -88,13 +88,26 @@ const MiniPlayer = ({ list }) => {
     const nextHandler = async () => {
         if (list !== null) {
             if (currentSong.id === (list.length - 1).toString() && isRandom === false) {
-                console.warn('Mini Player: No next song');
+                if (replayType === 'all-songs') {
+                    await TrackPlayer.add(list[0]);
+                    dispatch(setCurrentSong(list[0]));
+                    TrackPlayer.skipToNext();
+                }
+                else {
+                    console.warn('Mini Player: No next song');
+                }
             }
             else if (currentSong.id) {
-                const nextTrackID = isRandom ? await (Math.floor(Math.random() * list.length)).toString() : await (parseInt(currentSong.id) + 1).toString();
-                await TrackPlayer.add(list[nextTrackID]);
-                dispatch(setCurrentSong(list[nextTrackID]));
-                TrackPlayer.skipToNext();
+                if (replayType === 'no' || replayType === 'all-songs') {
+                    const nextTrackID = isRandom ? await (Math.floor(Math.random() * list.length)).toString() : await (parseInt(currentSong.id) + 1).toString();
+                    await TrackPlayer.add(list[nextTrackID]);
+                    dispatch(setCurrentSong(list[nextTrackID]));
+                    TrackPlayer.skipToNext();
+                }
+                else if (replayType === 'one-song') {
+                    await TrackEvent.add(currentSong.id);
+                    TrackPlayer.skipToNext();
+                }
             }
         }
     }
@@ -105,7 +118,7 @@ const MiniPlayer = ({ list }) => {
                 console.log('Mini Player: No previous song');
             }
             else if (currentSong.id) {
-                const previousTrackID = await (parseInt(currentSong.id) - 1).toString();
+                const previousTrackID = isRandom ? await (Math.floor(Math.random() * list.length)).toString() : await (parseInt(currentSong.id) - 1).toString();
                 await TrackPlayer.add(list[previousTrackID]);
                 dispatch(setCurrentSong(list[previousTrackID]));
                 TrackPlayer.skipToNext();
