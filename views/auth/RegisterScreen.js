@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { verticalScale, moderateScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 //firebase
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -67,67 +67,101 @@ const RegisterScreen = () => {
     }
 
     return (
-        <SafeAreaView>
+        <View style={styles.container}>
             <Spinner
                 visible={isLoading}
                 textStyle={styles.spinnerTextStyle}
             />
-            <View style={styles.header}>
-                <Text style={styles.headerTitle}>Đăng ký</Text>
-            </View>
-
+            <Text style={styles.title}>Đăng ký</Text>
+            <Text style={styles.subTitle}>Đăng ký đơn giản với email và mật khẩu</Text>
             <View style={styles.content}>
-
-                <TextInput
-                    style={styles.textInput}
-                    placeholder='Email'
-                    onChangeText={(value) => changeHandler(value, 'email')}
-                />
-                <TextInput
-                    style={styles.textInput}
-                    placeholder='Tên đăng nhập'
-                    onChangeText={(value) => changeHandler(value, 'displayName')}
-                />
-                <TextInput
-                    style={styles.textInput}
-                    placeholder='Password'
-                    onChangeText={(value) => changeHandler(value, 'password')}
-                />
+                <View style={styles.section}>
+                    <MaterialIcons name="email" size={moderateScale(30)} />
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder='Email'
+                        onChangeText={(value) => changeHandler(value, 'email')}
+                    />
+                </View>
+                <View style={styles.section}>
+                    <MaterialIcons name="account-circle" size={moderateScale(30)} />
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder='Tên hiển thị'
+                        onChangeText={(value) => changeHandler(value, 'displayName')}
+                    />
+                </View>
+                <View style={styles.section}>
+                    <MaterialIcons name="lock-outline" size={moderateScale(30)} />
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder='Mật khẩu'
+                        secureTextEntry
+                        onChangeText={(value) => changeHandler(value, 'password')}
+                    />
+                </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                    <Text>Có tài khoản mà! Đăng nhập đi chờ chi</Text>
+                    <Text style={styles.smallTitle}>Có tài khoản mà ! Vậy đăng nhập ngay nào</Text>
                 </TouchableOpacity>
-                <Button title='Đăng ký' onPress={registerHandler} />
-
+                <TouchableOpacity style={styles.register} onPress={registerHandler}>
+                    <Text style={styles.registerButton}>Đăng ký</Text>
+                </TouchableOpacity>
             </View>
-
-        </SafeAreaView>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    header: {
-        height: verticalScale(200),
-        alignItems: 'center',
+    container: {
+        flex: 1,
+        backgroundColor: colors.white,
         justifyContent: 'center',
-    },
-    headerTitle: {
-        fontSize: moderateScale(35),
-        fontWeight: '700'
-    },
-    content: {
-        height: verticalScale(400),
-        alignItems: 'center'
-    },
-    textInput: {
-        width: '80%',
-        height: verticalScale(40),
-        borderColor: colors.gray,
-        borderWidth: moderateScale(1),
-        marginVertical: moderateScale(5)
+        paddingHorizontal: moderateScale(30),
+        paddingVertical: moderateScale(100)
     },
     spinnerTextStyle: {
         color: colors.white
     },
+    title: {
+        fontSize: moderateScale(35),
+        fontWeight: 'bold',
+        color: colors.blue
+    },
+    subTitle: {
+        color: 'gray'
+    },
+    section: {
+        flexDirection: 'row',
+        borderWidth: moderateScale(1),
+        borderRadius: moderateScale(5),
+        paddingHorizontal: moderateScale(15),
+        paddingVertical: moderateScale(10),
+        alignItems: 'center',
+        marginTop: moderateScale(10)
+    },
+    textInput: {
+        flex: 1,
+        paddingLeft: moderateScale(10)
+    },
+    smallTitle: {
+        textAlign: 'right',
+        marginTop: moderateScale(10),
+        color: colors.blue
+    },
+    register: {
+        width: '100%',
+        height: verticalScale(40),
+        backgroundColor: colors.blue,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: moderateScale(10),
+        borderRadius: 50
+    },
+    registerButton: {
+        color: colors.white,
+        fontSize: moderateScale(15),
+        fontWeight: 'bold'
+    }
 })
 
 export default RegisterScreen
