@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { verticalScale, moderateScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 //firebase
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 import * as RootNavigation from '../../navigations/RootNavigation';
-
 import { colors } from '../../configs/colors';
-import { useDispatch } from 'react-redux';
 import { registerSuccess, registerFail } from './AuthAction';
 
 const RegisterScreen = () => {
@@ -35,6 +35,15 @@ const RegisterScreen = () => {
                 const currentUser = await auth().currentUser;
                 currentUser.updateProfile({
                     displayName: inputs.displayName
+                }).then(() => {
+                    firestore()
+                        .collection('Users')
+                        .doc(currentUser.uid)
+                        .set({
+                            email: inputs.email,
+                            displayName: inputs.displayName,
+                            uid: currentUser.uid
+                        })
                 }).then(() => {
                     setIsLoading(false);
                     dispatch(registerSuccess());
