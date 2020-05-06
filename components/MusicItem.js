@@ -11,8 +11,8 @@ const MusicItem = ({ item }) => {
 
     const dispatch = useDispatch();
 
-    const pressHandler = () => {
-        dispatch(setCurrentSong(item));
+    const pressHandler = async () => {
+        await dispatch(setCurrentSong(item));
     }
 
     return (
