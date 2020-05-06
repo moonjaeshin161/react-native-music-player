@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { verifyPermission } from '../musicPlayer/PlayerActions';
 import auth from '@react-native-firebase/auth';
 
-import { setUser, loginSuccess } from '../auth/AuthAction';
+import { loginSuccess } from '../auth/AuthAction';
+import { setUser } from '../user/UserActions';
 
 const HomeScreen = () => {
 
