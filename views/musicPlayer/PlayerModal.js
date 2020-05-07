@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, SafeAreaView, Image } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import TrackPlayer from 'react-native-track-player';
+import { StyleSheet, View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native';
+import TrackPlayer, { STATE_PLAYING } from 'react-native-track-player';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import Slider from '@react-native-community/slider';
 import Moment from 'moment';
 
-import Controller from '../../components/Controller';
-import CardMusic from '../../components/CardMusic';
-import SeekBar from '../../components/SeekBar';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DefaultThumbnail from '../../assets/images/default_thumbnail.jpg';
 
 const PlayerModal = (props) => {
@@ -27,8 +27,9 @@ const PlayerModal = (props) => {
         setIsRandom
     } = props;
 
-    const duration = currentSong.duration / 1000;
+    const duration = currentSong.id ? currentSong.duration / 1000 : 0;
     const [track, setTrack] = useState({ timeElapsed: "0:00", timeRemaining: Moment.utc(duration * 1000).format("m:ss") });
+    const [isPlaying, setIsPlaying] = useState((playerState === STATE_PLAYING) ? true : false);
 
     const changeTime = (seconds) => {
         setTrack({
@@ -43,30 +44,47 @@ const PlayerModal = (props) => {
         TrackPlayer.play();
     };
 
+    const playControl = () => {
+        if (playerState !== null) {
+            playHandler();
+            setIsPlaying(true);
+        }
+    }
+
+    const pauseControl = () => {
+        pauseHandler();
+        setIsPlaying(false);
+    }
+
     useEffect(() => {
         setTrack({
             ...track,
             timeElapsed: Moment.utc(position * 1000).format("m:ss"),
             timeRemaining: Moment.utc((duration - position) * 1000).format("m:ss"),
-        })
+        });
     }, [position])
 
     return (
         <SafeAreaView style={styles.container}>
+            {console.log('Player state: ', playerState)}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: moderateScale(24) }}>
+                <EvilIcons name='arrow-left' size={moderateScale(35)} style={{ paddingLeft: moderateScale(10) }} color='gray' onPress={() => setIsVisible(false)} />
+                <Text style={[styles.textLight, { fontSize: moderateScale(12) }]}>PLAYLIST</Text>
+                <EvilIcons name='navicon' size={moderateScale(35)} style={{ paddingRight: moderateScale(10) }} color='gray' onPress={() => setIsVisible(false)} />
+            </View>
             <View style={{ alignItems: 'center' }}>
-                <View style={{ alignItems: 'center', marginTop: moderateScale(24) }}>
-                    <Text style={[styles.textLight, { fontSize: moderateScale(12) }]}>PLAYLIST</Text>
+                <View style={{ alignItems: 'center' }}>
                     <Text style={[styles.text, { fontSize: moderateScale(15), fontWeight: '500', marginTop: moderateScale(8) }]}>
                         Thank you for using our app
                     </Text>
                 </View>
 
-                <View style={styles.coverContainer}>
+                <View style={[styles.coverContainer, { marginTop: moderateScale(15) }]}>
                     <Image source={DefaultThumbnail} style={styles.cover} />
                 </View>
             </View>
 
-            <View style={{ alignItems: 'center', marginTop: moderateScale(32) }}>
+            <View style={{ alignItems: 'center', marginTop: moderateScale(25) }}>
                 <Text style={[styles.textDark, { fontSize: moderateScale(20), fontWeight: '500' }]}>
                     {currentSong.id ? currentSong.title : 'Song Title'}
                 </Text>
@@ -91,20 +109,35 @@ const PlayerModal = (props) => {
                     <Text style={[styles.textLight, styles.timeStamp]}>{track.timeRemaining}</Text>
                 </View>
             </View>
-            {/* <AntDesign name='down' size={30} onPress={() => setIsVisible(false)} />
-            <CardMusic currentSong={currentSong} />
-            <Controller
-                playerState={playerState}
-                previousHandler={previousHandler}
-                pauseHandler={pauseHandler}
-                nextHandler={nextHandler}
-                playHandler={playHandler}
-                replayType={replayType}
-                setReplayType={setReplayType}
-                isRandom={isRandom}
-                setIsRandom={setIsRandom}
-            />
-            <SeekBar position={position} duration={duration} /> */}
+
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity style={{ paddingRight: moderateScale(10) }}>
+                    {
+                        (replayType === 'no')
+                            ? <MaterialCommunityIcons name='repeat-off' size={moderateScale(25)} color="#93A8BA" onPress={() => setReplayType('all-songs')} />
+                            : (replayType === 'all-songs')
+                                ? < MaterialCommunityIcons name='repeat' size={moderateScale(25)} color="black" onPress={() => setReplayType('one-song')} />
+                                : < MaterialCommunityIcons name='repeat-once' size={moderateScale(25)} color="black" onPress={() => setReplayType('no')} />
+
+                    }
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <FontAwesome5 name='backward' size={moderateScale(32)} color="#93A8BA" onPress={previousHandler} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.playButtonContainer}>
+                    {
+                        isPlaying
+                            ? <FontAwesome5 name='pause' size={moderateScale(35)} color="#3D425C" onPress={pauseControl} />
+                            : <FontAwesome5 name='play' size={moderateScale(35)} color="#3D425C" style={[styles.playButton, { marginLeft: moderateScale(8) }]} onPress={playControl} />
+                    }
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <FontAwesome5 name='forward' size={moderateScale(32)} color="#93A8BA" onPress={nextHandler} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ paddingLeft: moderateScale(10) }}>
+                    <FontAwesome name='random' size={moderateScale(20)} color={isRandom ? '#000000' : "#93A8BA"} onPress={() => setIsRandom(!isRandom)} />
+                </TouchableOpacity>
+            </View>
 
         </SafeAreaView>
     )
@@ -126,7 +159,6 @@ const styles = StyleSheet.create({
         color: '#3D425C'
     },
     coverContainer: {
-        marginTop: moderateScale(32),
         width: scale(250),
         height: verticalScale(250),
         shadowColor: '#5D3F6A',
@@ -143,6 +175,20 @@ const styles = StyleSheet.create({
         fontSize: moderateScale(11),
         fontWeight: '400',
         marginTop: moderateScale(10)
+    },
+    playButtonContainer: {
+        backgroundColor: '#FFF',
+        borderColor: "rgba(93,63,106,0.2)",
+        borderWidth: moderateScale(12),
+        width: scale(100),
+        height: scale(100),
+        borderRadius: moderateScale(64),
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: moderateScale(20),
+        shadowColor: '#5D3F6A',
+        shadowRadius: moderateScale(30),
+        shadowOpacity: scale(0.5)
     }
 
 })

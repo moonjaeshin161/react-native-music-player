@@ -83,6 +83,7 @@ const MiniPlayer = ({ list }) => {
     }
 
     const pauseHandler = () => {
+        console.log('Pause')
         TrackPlayer.pause();
     }
 
