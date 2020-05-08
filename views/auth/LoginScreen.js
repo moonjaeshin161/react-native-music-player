@@ -4,7 +4,7 @@ import { moderateScale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 //firebase
 import auth from '@react-native-firebase/auth';
 
