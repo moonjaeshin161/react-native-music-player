@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, ImageBackground, StyleSheet, Button } from 'react-native'
+import { View, Text, ImageBackground, StyleSheet, Button, TouchableOpacity } from 'react-native'
 import SettingBackground from '../../assets/images/setting_background.png';
-import { verticalScale, moderateScale } from 'react-native-size-matters';
+import { verticalScale, moderateScale, scale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import * as RootNavigation from '../../navigations/RootNavigation';
@@ -29,16 +29,23 @@ const SettingScreen = () => {
 
     return (
         <View>
-            {console.log('Is login:', isLogin)}
             <ImageBackground resizeMode="cover" style={styles.background} source={SettingBackground} />
 
             <View style={styles.content}>
                 <Text style={styles.title}>Xin chào đến với app nghenhacretien </Text>
+                {!isLogin && <Text style={{ color: '#8E97A6', fontSize: moderateScale(13), fontWeight: '500' }}>Đăng nhập ngay để sử dụng đầy đủ tính năng nhất</Text>}
+                <TouchableOpacity style={styles.optionButton} onPress={() => navigation.navigate('About')}>
+                    <Text style={styles.optionText}>Về chúng tôi</Text>
+                </TouchableOpacity>
                 {
-                    isLogin ? <Button title="Đăng xuất" onPress={() => signoutHandler()} />
+                    isLogin
+                        ? <TouchableOpacity style={styles.optionButton} onPress={signoutHandler}>
+                            <Text style={styles.optionText}>Đăng xuất</Text>
+                        </TouchableOpacity>
                         : <>
-                            <Text>Đăng nhập ngay để sử dụng đầy đủ tính năng nhất</Text>
-                            <Button title='Đăng nhập' onPress={() => navigation.navigate('Login')} />
+                            <TouchableOpacity style={styles.optionButton} onPress={() => navigation.navigate('Login')}>
+                                <Text style={styles.optionText}>Đăng nhập</Text>
+                            </TouchableOpacity>
                         </>
                 }
 
@@ -59,7 +66,24 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: 'BalooBhaina2-ExtraBold',
-        fontSize: moderateScale(20)
+        fontSize: moderateScale(20),
+        color: '#3D425C'
+    },
+    optionButton: {
+        marginTop: moderateScale(15),
+        marginBottom: moderateScale(5),
+        backgroundColor: '#1E90FF',
+        width: scale(120),
+        height: scale(45),
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: '#E6E6FA',
+        borderRadius: moderateScale(8)
+    },
+    optionText: {
+        fontSize: moderateScale(15),
+        color: '#F5FFFA',
+        fontFamily: 'AlfaSlabOne-Regular'
     }
 });
 

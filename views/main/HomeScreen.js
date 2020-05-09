@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { useDispatch } from 'react-redux';
 import { verifyPermission } from '../musicPlayer/PlayerActions';
@@ -55,14 +55,16 @@ const HomeScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Bài tập lớn - App nghe nhạc</Text>
-            <Text style={styles.subTitle}>Các thành viên trong nhóm</Text>
-            <View style={styles.listContainer}>
-                <Text style={styles.member}>Nguyễn Công Huynh</Text>
-                <Text style={styles.member}>Vũ Đăng Huy</Text>
-                <Text style={styles.member}>Hoàng Thái Hà</Text>
-                <Text style={styles.member}>Doãn Đoàn Đại Hùng</Text>
-                <Text style={styles.member}>Kiều Thanh Phong</Text>
+            <View style={{ marginTop: moderateScale(20), alignItems: 'center' }}>
+                <Text style={styles.title}>Bài tập lớn - App nghe nhạc</Text>
+                <Text style={styles.subTitle}>Các thành viên trong nhóm</Text>
+                <View style={styles.listContainer}>
+                    <Text style={styles.member}>Nguyễn Công Huynh</Text>
+                    <Text style={styles.member}>Vũ Đăng Huy</Text>
+                    <Text style={styles.member}>Hoàng Thái Hà</Text>
+                    <Text style={styles.member}>Doãn Đoàn Đại Hùng</Text>
+                    <Text style={styles.member}>Kiều Thanh Phong</Text>
+                </View>
             </View>
         </SafeAreaView>
     )
@@ -71,26 +73,27 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
     },
     title: {
-        fontSize: scale(27),
+        fontSize: scale(23),
         fontWeight: '600',
-        fontFamily: 'BalooBhaina2-ExtraBold',
+        fontFamily: 'AlfaSlabOne-Regular'
     },
     subTitle: {
         fontSize: scale(22),
         fontWeight: '400',
-        marginTop: scale(5)
+        marginTop: scale(5),
+        fontFamily: 'BalooBhaina2-ExtraBold',
     },
     listContainer: {
-        paddingTop: verticalScale(10)
+        marginTop: verticalScale(1)
     },
     member: {
-        fontSize: scale(13),
+        fontSize: scale(18),
         fontWeight: '300',
         textAlign: 'center',
-        marginBottom: scale(5)
+        marginBottom: scale(5),
+        fontFamily: 'Jura',
     }
 })
 

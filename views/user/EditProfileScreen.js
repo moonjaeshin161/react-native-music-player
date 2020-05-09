@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
-import { moderateScale, scale } from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { useSelector, useDispatch } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ImagePicker from 'react-native-image-picker';
@@ -132,19 +132,22 @@ const EditProfileScreen = () => {
 
             <View style={{ marginTop: moderateScale(64), alignItems: 'center' }}>
 
-                <Text>Edit Profile</Text>
+
+                <Text style={{ fontSize: moderateScale(30), fontWeight: '600', fontFamily: 'BalooBhaina2-ExtraBold', color: '#3D425C' }}>Chỉnh sửa thông tin</Text>
                 <TouchableOpacity style={[styles.avatarContainer, { marginTop: moderateScale(10) }]} onPress={pickImageHandler}>
                     <Image style={styles.avatar} source={imageURI} />
                 </TouchableOpacity>
 
-                <View style={styles.section}>
-                    <View style={{ flexDirection: 'row', width: scale(200) }}>
-                        <Text>Tên hiển thị : </Text>
+                <View style={[styles.section, { marginTop: moderateScale(25) }]}>
+                    <View style={{ flexDirection: 'row', width: scale(200), alignItems: 'center', flex: 1 }}>
+                        <Text style={[styles.editText, { fontWeight: '500' }]}>Tên hiển thị : </Text>
                         {
                             !isEdited
                                 ? <>
-                                    <Text>{user.displayName} </Text>
-                                    <MaterialIcons name="edit" size={moderateScale(25)} onPress={() => setIsEdited(true)} />
+                                    <View style={{ flex: 9, justifyContent: 'center' }}>
+                                        <Text style={[styles.editText]}>{user.displayName} </Text>
+                                    </View>
+                                    <MaterialIcons name="edit" style={{ flex: 2 }} color='gray' size={moderateScale(25)} onPress={() => setIsEdited(true)} />
                                 </>
                                 :
                                 <>
@@ -154,8 +157,8 @@ const EditProfileScreen = () => {
                                         value={inputs.displayName}
                                         placeholder={user.displayName}
                                     />
-                                    <TouchableOpacity>
-                                        <Text>OK</Text>
+                                    <TouchableOpacity style={styles.cancelButton} onPress={() => setIsEdited(false)}>
+                                        <Text style={{ fontSize: moderateScale(12), color: 'gray' }}>Huỷ</Text>
                                     </TouchableOpacity>
                                 </>
                         }
@@ -163,11 +166,11 @@ const EditProfileScreen = () => {
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={editHandler}>
-                        <Text>Xác nhận thay đổi</Text>
+                    <TouchableOpacity onPress={editHandler} style={{ ...styles.optionButton, backgroundColor: '#1E90FF' }}>
+                        <Text style={{ color: 'white' }}>Xác nhận thay đổi</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text>Hủy</Text>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ ...styles.optionButton, backgroundColor: '#FF7F50' }}>
+                        <Text style={{ color: 'white' }}>Hủy</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -195,15 +198,41 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderWidth: moderateScale(1),
         borderRadius: moderateScale(5),
-        paddingHorizontal: moderateScale(15),
-        paddingVertical: moderateScale(10),
+        width: scale(300),
+        height: verticalScale(40),
         alignItems: 'center',
-        marginTop: moderateScale(10)
+        marginTop: moderateScale(10),
+        borderColor: '#B0C4DE'
     },
     textInput: {
-        flex: 1,
-        paddingLeft: moderateScale(10)
+        flex: 9,
+        paddingLeft: moderateScale(10),
+        fontSize: moderateScale(20)
+    },
+    editText: {
+        fontSize: moderateScale(20),
+        paddingLeft: moderateScale(10),
+    },
+    cancelButton: {
+        flex: 2,
+        borderWidth: moderateScale(1),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: moderateScale(5),
+        borderRadius: moderateScale(5)
+    },
+    optionButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: moderateScale(1),
+        borderRadius: moderateScale(5),
+        marginVertical: moderateScale(7),
+        marginHorizontal: moderateScale(5),
+        paddingHorizontal: moderateScale(5),
+        paddingVertical: moderateScale(5),
+        borderColor: '#E6E6FA'
     }
+
 })
 
 export default EditProfileScreen
