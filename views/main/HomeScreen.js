@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { verifyPermission } from '../musicPlayer/PlayerActions';
 import auth from '@react-native-firebase/auth';
 
@@ -14,10 +14,8 @@ const HomeScreen = () => {
     const [result, setResult] = useState(null);
     const dispatch = useDispatch();
     const [initializing, setInitializing] = useState(true);
-    const isLogin = useSelector(state => state.auth.isLogin);
 
     useEffect(() => {
-        console.log('Home: ', isLogin)
         checkPermission();
         if (result === RESULTS.DENIED) {
             requestPermission();
@@ -29,7 +27,7 @@ const HomeScreen = () => {
 
     function onAuthStateChanged(user) {
         if (user) {
-            dispatch(setUser(user));
+            dispatch(setUser({ email: user.email, displayName: user.displayName, avatar: user.photoURL, uid: user.uid }));
             dispatch(loginSuccess());
         }
         if (initializing) setInitializing(false);

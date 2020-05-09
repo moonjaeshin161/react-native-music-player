@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
@@ -9,12 +9,13 @@ import DefaultAvatar from '../../assets/images/default_avatar.png';
 const ProfileScreen = () => {
     const user = useSelector(state => state.user.user);
     const navigation = useNavigation();
+    const [imageURI, setImageURI] = useState(user.avatar ? { uri: user.avatar } : DefaultAvatar);
 
     return (
         <View style={styles.container}>
             <View style={{ marginTop: moderateScale(64), alignItems: 'center' }}>
                 <View style={styles.avatarContainer}>
-                    <Image style={styles.avatar} source={DefaultAvatar} />
+                    <Image style={styles.avatar} source={imageURI} />
                 </View>
                 <Text style={styles.displayName}>Lâu lắm mới thấy bạn đó {user.displayName ? user.displayName : 'User'}</Text>
             </View>
