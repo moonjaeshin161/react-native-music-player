@@ -49,11 +49,11 @@ const MusicItem = ({ item }) => {
                 storageRef.getDownloadURL()
                     .then(downloadURL => {
                         console.log('File available at: ', downloadURL);
-                        console.log('Item: ', item.id);
                         const savedSong = {
                             [item.id]: {
                                 title: item.title,
                                 downloadURL,
+                                id: item.id
                             }
                         }
                         firestore()
