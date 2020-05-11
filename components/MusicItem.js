@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import RNFetchBlob from 'rn-fetch-blob'
 //firebase
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
@@ -22,8 +23,6 @@ const MusicItem = ({ item, savedScreen }) => {
     }
 
     const uploadHandler = async () => {
-        console.log('Current Song: ', item);
-        console.log('User: ', user);
         const fileExtension = await item.url.split('.').pop();
         const fileName = await `${item.title}.${fileExtension}`;
 
@@ -77,7 +76,24 @@ const MusicItem = ({ item, savedScreen }) => {
     }
 
     const downloadHandler = async () => {
-        console.log('Downloading...');
+        let dirs = RNFetchBlob.fs.dirs;
+        RNFetchBlob
+            .config({
+                fileCache: true,
+                path: dirs.DownloadDir + `/${item.title}.mp3`
+                // response data will be saved to this path if it has access right.
+
+            })
+            .fetch('GET', item.downloadURL, {
+                //some headers ..
+            })
+            .then((res) => {
+                // the path should be dirs.DocumentDir + 'path-to-file.anything'
+                console.log('The file saved to ', res.path())
+            })
+            .catch(err => {
+                console.log('Error when download music: ', err)
+            })
     }
 
     return (
