@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 //firebase
 import firestore from '@react-native-firebase/firestore';
 import { } from 'react-native-gesture-handler';
+import MusicItem from '../../components/MusicItem';
 
 const SavedMusicScreen = () => {
 
@@ -35,21 +36,22 @@ const SavedMusicScreen = () => {
 
     return (
         <View style={styles.container}>
-            {console.log('Saved Musics: ', savedMusics)}
+
             <FlatList
                 data={savedMusics}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => <Text>{item.title}</Text>}
+                renderItem={({ item }) => <MusicItem item={item} savedScreen='true' />}
             />
+
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1
-    // }
+    container: {
+        flex: 1
+    }
 })
 
-export default SavedMusicScreen
+export default SavedMusicScreen;
 
