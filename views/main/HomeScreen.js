@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Platform } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { useDispatch } from 'react-redux';
-import { verifyPermission } from '../musicPlayer/PlayerActions';
+import { verifyReadPermission } from '../musicPlayer/PlayerActions';
 import auth from '@react-native-firebase/auth';
 
 import { loginSuccess } from '../auth/AuthAction';
@@ -16,11 +16,11 @@ const HomeScreen = () => {
     const [initializing, setInitializing] = useState(true);
 
     useEffect(() => {
-        checkPermission();
+        checkReadPermission();
         if (result === RESULTS.DENIED) {
-            requestPermission();
+            requestReadPermission();
         }
-        dispatch(verifyPermission(result));
+        dispatch(verifyReadPermission(result));
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, [result]);
@@ -33,7 +33,7 @@ const HomeScreen = () => {
         if (initializing) setInitializing(false);
     }
 
-    const checkPermission = async () => {
+    const checkReadPermission = async () => {
         let checkResult = await check(
             Platform.select({
                 android: PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
@@ -43,7 +43,7 @@ const HomeScreen = () => {
         await setResult(checkResult);
     }
 
-    const requestPermission = async () => {
+    const requestReadPermission = async () => {
         let requestResult = await request(
             Platform.select({
                 android: PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
