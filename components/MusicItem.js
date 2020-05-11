@@ -11,7 +11,7 @@ import { colors } from '../configs/colors';
 import { setCurrentSong } from '../views/musicPlayer/PlayerActions';
 import MiniThumbnail from '../assets/images/default_mini_thumbnail.png';
 
-const MusicItem = ({ item }) => {
+const MusicItem = ({ item, savedScreen }) => {
 
     const dispatch = useDispatch();
     const isLogin = useSelector(state => state.auth.isLogin);
@@ -76,6 +76,10 @@ const MusicItem = ({ item }) => {
         )
     }
 
+    const downloadHandler = async () => {
+        console.log('Downloading...');
+    }
+
     return (
         <TouchableOpacity style={styles.container} onPress={pressHandler}>
 
@@ -85,7 +89,12 @@ const MusicItem = ({ item }) => {
                 {
                     isLogin &&
                     <View style={styles.uploadContainer}>
-                        <AntDesign name='upload' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={uploadHandler} />
+                        {
+                            savedScreen
+                                ? <AntDesign name='clouddownloado' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={downloadHandler} />
+                                : <AntDesign name='upload' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={uploadHandler} />
+                        }
+
                     </View>
                 }
             </View>
