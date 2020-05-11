@@ -37,6 +37,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Read media file permission</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
@@ -74,7 +76,5 @@
 		<string>AlfaSlabOne-Regular.ttf</string>
 		<string>Jura-VariableFont_wght.ttf</string>
 	</array>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Music Permission</string>
 </dict>
 </plist>
