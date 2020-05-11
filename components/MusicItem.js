@@ -49,17 +49,28 @@ const MusicItem = ({ item }) => {
                 storageRef.getDownloadURL()
                     .then(downloadURL => {
                         console.log('File available at: ', downloadURL);
-                        console.log('Item: ', item.id)
+                        console.log('Item: ', item.id);
                         const savedSong = {
-                            title: item.title,
-                            downloadURL,
+                            [item.id]: {
+                                title: item.title,
+                                downloadURL,
+                            }
                         }
                         firestore()
                             .collection('Musics')
                             .doc(user.uid)
-                            .collection(savedSong.title)
-                            .doc(item.id)
-                            .set(savedSong)
+                            .update(savedSong)
+                            .then(() => {
+                                console.log('Success');
+                            })
+                            .catch(err => {
+                                if (err.code = 'firestore/not-found') {
+                                    firestore()
+                                        .collection('Musics')
+                                        .doc(user.uid)
+                                        .set(savedSong)
+                                }
+                            })
                     })
             }
         )
