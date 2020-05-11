@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Platform } from 'react-native';
+import { StyleSheet, View, FlatList, Platform, Text, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 //firebase
@@ -15,7 +15,6 @@ const SavedMusicScreen = () => {
 
     useEffect(() => {
         checkWritePermission();
-        console.log('Write per: ', result);
         if (result === RESULTS.DENIED) {
             requestWritePermission();
         }
@@ -51,8 +50,6 @@ const SavedMusicScreen = () => {
         await setResult(requestResult);
     }
 
-
-
     const convertObjToArr = (object) => {
         const listKey = Object.keys(object);
         const newList = [];
@@ -63,15 +60,15 @@ const SavedMusicScreen = () => {
     }
 
     return (
-        <View style={styles.container}>
-
+        <SafeAreaView style={styles.container}>
+            <Text>List music download</Text>
             <FlatList
                 data={savedMusics}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => <MusicItem item={item} savedScreen='true' />}
             />
 
-        </View>
+        </SafeAreaView>
     )
 }
 
