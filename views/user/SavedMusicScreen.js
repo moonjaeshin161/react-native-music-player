@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 //firebase
 import firestore from '@react-native-firebase/firestore';
+import { } from 'react-native-gesture-handler';
 
 const SavedMusicScreen = () => {
 
@@ -11,41 +12,43 @@ const SavedMusicScreen = () => {
     const user = useSelector(state => state.user.user)
 
     useEffect(() => {
-        realtimeGetMusic()
+        const subscriber = firestore()
+            .collection('Musics')
+            .doc(user.uid)
+            .onSnapshot({
+                includeMetadataChanges: true
+            }, (doc) => {
+                const data = doc.data();
+                setSavedMusics(convertObjToArr(data));
+            });
+        return () => subscriber();
     }, []);
 
-    const getMusic = async () => {
-        const musicsCollection = firestore().collection('Musics');
-        musicsCollection
-            .doc(user.uid)
-            .get()
-            .then(doc => {
-                console.log(doc.data())
-            })
-    }
-
-    const realtimeGetMusic = async () => {
-        const musicsDoc = firestore().collection('Musics').doc(user.uid);
-        musicsDoc.onSnapshot({
-            includeMetadataChanges: true
-        }, (doc) => {
-            console.log('Data: ', doc.data())
+    const convertObjToArr = (object) => {
+        const listKey = Object.keys(object);
+        const newList = [];
+        for (let i = 0; i < listKey.length; i++) {
+            newList.push(object[i]);
         }
-        )
-
+        return newList;
     }
 
     return (
-        <View>
-            <TouchableOpacity onPress={getMusic}>
-                <Text>Get Music</Text>
-            </TouchableOpacity>
+        <View style={styles.container}>
+            {console.log('Saved Musics: ', savedMusics)}
+            <FlatList
+                data={savedMusics}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => <Text>{item.title}</Text>}
+            />
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-
+    // container: {
+    //     flex: 1
+    // }
 })
 
 export default SavedMusicScreen
