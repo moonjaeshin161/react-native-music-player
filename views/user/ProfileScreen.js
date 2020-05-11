@@ -25,7 +25,7 @@ const ProfileScreen = () => {
                 <TouchableOpacity style={styles.optionContainer} onPress={() => navigation.navigate('Edit')}>
                     <Text style={styles.optionText}>Chỉnh sửa thông tin</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.optionContainer} onPress={() => navigation.navigate('Edit')}>
+                <TouchableOpacity style={styles.optionContainer} onPress={() => navigation.navigate('Saved Music')}>
                     <Text style={styles.optionText}>Nhạc của tui</Text>
                 </TouchableOpacity>
             </View>
