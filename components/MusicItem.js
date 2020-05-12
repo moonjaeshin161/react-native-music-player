@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import RNFetchBlob from 'rn-fetch-blob'
+import RNFetchBlob from 'rn-fetch-blob';
+import { showMessage } from "react-native-flash-message";
 //firebase
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
@@ -12,7 +13,7 @@ import { colors } from '../configs/colors';
 import { setCurrentSong } from '../views/musicPlayer/PlayerActions';
 import MiniThumbnail from '../assets/images/default_mini_thumbnail.png';
 
-const MusicItem = ({ item, savedScreen }) => {
+const MusicItem = ({ item, savedScreen, setIsLoading }) => {
 
     const dispatch = useDispatch();
     const isLogin = useSelector(state => state.auth.isLogin);
@@ -23,6 +24,7 @@ const MusicItem = ({ item, savedScreen }) => {
     }
 
     const uploadHandler = async () => {
+        setIsLoading(true);
         const fileExtension = await item.url.split('.').pop();
         const fileName = await `${item.title}.${fileExtension}`;
 
@@ -35,10 +37,8 @@ const MusicItem = ({ item, savedScreen }) => {
                 console.log('Snapshot: ', snapshot.state);
 
                 if (snapshot.state === storage.TaskState.SUCCESS) {
-                    console.log('Success')
+                    console.log('Success');
                 }
-
-                console.log(`${snapshot.bytesTransferred} transferred out of ${task.totalBytes}`);
             },
             error => {
                 unsubscribe();
@@ -60,7 +60,11 @@ const MusicItem = ({ item, savedScreen }) => {
                             .doc(user.uid)
                             .update(savedSong)
                             .then(() => {
-                                console.log('Success');
+                                showMessage({
+                                    message: 'Upload success',
+                                    type: "success",
+                                });
+                                setIsLoading(false);
                             })
                             .catch(err => {
                                 if (err.code = 'firestore/not-found') {
@@ -68,7 +72,18 @@ const MusicItem = ({ item, savedScreen }) => {
                                         .collection('Musics')
                                         .doc(user.uid)
                                         .set(savedSong)
+                                        .then(() => {
+                                            showMessage({
+                                                message: 'Upload success',
+                                                type: "success",
+                                            });
+                                            setIsLoading(false);
+                                        })
                                 }
+                                showMessage({
+                                    message: `Error occurs: ${error} `,
+                                    type: "warning",
+                                });
                             })
                     })
             }
@@ -88,11 +103,18 @@ const MusicItem = ({ item, savedScreen }) => {
                 //some headers ..
             })
             .then((res) => {
+                showMessage({
+                    message: 'Download success',
+                    type: "success",
+                });
                 // the path should be dirs.DocumentDir + 'path-to-file.anything'
                 console.log('The file saved to ', res.path())
             })
             .catch(err => {
-                console.log('Error when download music: ', err)
+                showMessage({
+                    message: 'Error occurs: ', err,
+                    type: "warning",
+                });
             })
     }
 
@@ -145,7 +167,7 @@ const styles = StyleSheet.create({
     },
     uploadButton: {
         marginRight: moderateScale(5)
-    }
+    },
 });
 
 export default MusicItem

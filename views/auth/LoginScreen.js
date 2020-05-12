@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { showMessage } from "react-native-flash-message";
 //firebase
 import auth from '@react-native-firebase/auth';
 
@@ -28,7 +29,6 @@ const LoginScreen = () => {
 
     const loginHandler = async () => {
         setIsLoading(true);
-        console.log('Email password: ', inputs.email, inputs.password)
         auth()
             .signInWithEmailAndPassword(inputs.email, inputs.password)
             .then(() => {
@@ -40,15 +40,25 @@ const LoginScreen = () => {
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
-                    console.log('That email address is already in use!');
+                    showMessage({
+                        message: 'That email address is already in use!',
+                        type: "warning",
+                    });
                 }
 
                 if (error.code === 'auth/invalid-email') {
-                    console.log('That email address is invalid!');
+                    showMessage({
+                        message: 'That email address is invalid!',
+                        type: "warning",
+                    });
+
                 }
                 setIsLoading(false);
                 dispatch(loginFail());
-                console.error(error);
+                showMessage({
+                    message: `Error occurs: ${error} `,
+                    type: "warning",
+                });
             });
     }
 

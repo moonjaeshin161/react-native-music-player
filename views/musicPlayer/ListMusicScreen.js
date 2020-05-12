@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { scale, moderateScale } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-community/async-storage';
+import { showMessage } from "react-native-flash-message";
 
 import MusicItem from '../../components/MusicItem';
 import MiniPlayer from '../../components/MiniPlayer';
@@ -59,11 +60,17 @@ const ListMusicScreen = () => {
                 setIsLoading(false);
             }
             else {
-                console.log('There is no music file in your device');
+                showMessage({
+                    message: "There is no music file in your device",
+                    type: "warning",
+                });
                 setIsLoading(false);
             }
         }).catch(errors => {
-            console.log('Error when fetching music: ', errors);
+            showMessage({
+                message: `Error occurs when fetching music: ${error} `,
+                type: "warning",
+            });
             setIsLoading(false);
         })
     }
@@ -91,7 +98,7 @@ const ListMusicScreen = () => {
             <FlatList
                 style={styles.musicItem}
                 data={sortedList}
-                renderItem={({ item }) => <MusicItem item={item} />}
+                renderItem={({ item }) => <MusicItem item={item} setIsLoading={setIsLoading} />}
                 keyExtractor={item => item.id}
             />
             <MiniPlayer style={styles.miniPlayer} list={list} />

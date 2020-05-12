@@ -25,7 +25,9 @@ const SavedMusicScreen = () => {
                 includeMetadataChanges: true
             }, (doc) => {
                 const data = doc.data();
-                setSavedMusics(convertObjToArr(data));
+                if (data) {
+                    setSavedMusics(convertObjToArr(data));
+                }
             });
         return () => subscriber();
     }, [result]);
