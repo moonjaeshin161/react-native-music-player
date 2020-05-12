@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, FlatList, Platform, Text, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import { moderateScale } from 'react-native-size-matters';
+import Spinner from 'react-native-loading-spinner-overlay';
 //firebase
 import firestore from '@react-native-firebase/firestore';
 import { } from 'react-native-gesture-handler';
@@ -12,6 +14,7 @@ const SavedMusicScreen = () => {
     const [result, setResult] = useState(null);
     const [savedMusics, setSavedMusics] = useState([]);
     const user = useSelector(state => state.user.user);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         checkWritePermission();
@@ -63,11 +66,15 @@ const SavedMusicScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text>List music download</Text>
+            <Spinner
+                visible={isLoading}
+                textStyle={styles.spinnerTextStyle}
+            />
+            <Text style={styles.title}>List music download</Text>
             <FlatList
                 data={savedMusics}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => <MusicItem item={item} savedScreen='true' />}
+                renderItem={({ item }) => <MusicItem item={item} savedScreen='true' setIsLoading={setIsLoading} />}
             />
 
         </SafeAreaView>
@@ -76,7 +83,13 @@ const SavedMusicScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+    },
+    title: {
+        fontSize: moderateScale(30),
+        fontFamily: 'BalooBhaina2-ExtraBold',
+        textAlign: 'center',
+        color: '#3D425C'
     }
 })
 

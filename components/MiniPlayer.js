@@ -204,15 +204,16 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'column',
         marginLeft: moderateScale(8),
-        justifyContent: 'center'
     },
     titleSong: {
-        fontSize: moderateScale(18),
-        fontWeight: '600'
+        fontSize: moderateScale(20),
+        fontWeight: '600',
+        fontFamily: 'Pangolin-Regular'
     },
     titleArtist: {
         fontSize: moderateScale(10),
-        paddingLeft: moderateScale(7)
+        paddingLeft: moderateScale(7),
+        marginBottom: moderateScale(5),
     },
     controlContainer: {
         flexDirection: 'row',

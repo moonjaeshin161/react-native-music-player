@@ -91,6 +91,7 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
     }
 
     const downloadHandler = async () => {
+        setIsLoading(true)
         let dirs = RNFetchBlob.fs.dirs;
         RNFetchBlob
             .config({
@@ -107,6 +108,7 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
                     message: 'Download success',
                     type: "success",
                 });
+                setIsLoading(false);
                 // the path should be dirs.DocumentDir + 'path-to-file.anything'
                 console.log('The file saved to ', res.path())
             })
@@ -115,6 +117,7 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
                     message: 'Error occurs: ', err,
                     type: "warning",
                 });
+                setIsLoading(false);
             })
     }
 
@@ -159,7 +162,8 @@ const styles = StyleSheet.create({
     title: {
         fontSize: verticalScale(20),
         paddingLeft: scale(5),
-        fontWeight: '200'
+        fontWeight: '600',
+        fontFamily: 'Pangolin-Regular'
     },
     uploadContainer: {
         flex: 1,
