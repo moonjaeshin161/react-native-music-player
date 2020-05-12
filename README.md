@@ -76,6 +76,11 @@ REMOTE_NEXT: 'remote-next',
 **Failed to install the app**. Make sure you have the Android development environment set up
 *Solution* **Delete** the .idea folder in the root directory of the project and **Delete** all the .iml files in your project
 
+**RNReactNativeTrackPlayer** null is not supported event types
+*Solution* Go to the react-native-track-player in node mudules and add this line in the lib eventTypes
+(dir: nodemodules/react-native-track-player/lib/eventTypes)
+REMOTE_NEXT: 'remote-next',
+
 
 ### Contributors
  - Vu Dang Huy
