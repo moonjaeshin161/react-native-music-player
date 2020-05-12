@@ -93,7 +93,7 @@ const ListMusicScreen = () => {
             />
             {
                 !isSearched ? <Header setIsSearched={setIsSearched} />
-                    : <SearchBar setSortedList={setSortedList} list={list} />
+                    : <SearchBar setSortedList={setSortedList} list={list} setIsSearched={setIsSearched} />
             }
             <FlatList
                 style={styles.musicItem}

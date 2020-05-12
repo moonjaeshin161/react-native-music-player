@@ -20,6 +20,7 @@
 		405D67CD246659FC00597FC7 /* AlfaSlabOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 405D67CC246659FC00597FC7 /* AlfaSlabOne-Regular.ttf */; };
 		408DF58124665F0D00B0597A /* Jura-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 408DF58024665F0D00B0597A /* Jura-VariableFont_wght.ttf */; };
 		40B6ADB524530F6200A599F9 /* dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B6ADB424530F6200A599F9 /* dummy.swift */; };
+		40B81658246A45C000F6DDCF /* Pangolin-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40B81657246A45C000F6DDCF /* Pangolin-Regular.ttf */; };
 		40D73F50244FD78900035789 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 40D73F4F244FD78800035789 /* GoogleService-Info.plist */; };
 		40FD019E24610A600097B360 /* BalooBhaina2-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40FD019D24610A600097B360 /* BalooBhaina2-ExtraBold.ttf */; };
 		AD59D52803932412ECB139D9 /* libPods-musicPlayerApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2529CF03A1E1A2002F30E405 /* libPods-musicPlayerApp-tvOS.a */; };
@@ -64,6 +65,7 @@
 		408DF58024665F0D00B0597A /* Jura-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jura-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		40B6ADB324530F6100A599F9 /* musicPlayerApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "musicPlayerApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		40B6ADB424530F6200A599F9 /* dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy.swift; sourceTree = "<group>"; };
+		40B81657246A45C000F6DDCF /* Pangolin-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pangolin-Regular.ttf"; sourceTree = "<group>"; };
 		40D73F4F244FD78800035789 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		40FD019D24610A600097B360 /* BalooBhaina2-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BalooBhaina2-ExtraBold.ttf"; sourceTree = "<group>"; };
 		47B0406537D745591B3D6195 /* Pods-musicPlayerApp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-musicPlayerApp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-musicPlayerApp-tvOSTests/Pods-musicPlayerApp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				405D67CC246659FC00597FC7 /* AlfaSlabOne-Regular.ttf */,
+				40B81657246A45C000F6DDCF /* Pangolin-Regular.ttf */,
 				408DF58024665F0D00B0597A /* Jura-VariableFont_wght.ttf */,
 				40FD019D24610A600097B360 /* BalooBhaina2-ExtraBold.ttf */,
 			);
@@ -369,6 +372,7 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				40FD019E24610A600097B360 /* BalooBhaina2-ExtraBold.ttf in Resources */,
 				40D73F50244FD78900035789 /* GoogleService-Info.plist in Resources */,
+				40B81658246A45C000F6DDCF /* Pangolin-Regular.ttf in Resources */,
 				405D67CD246659FC00597FC7 /* AlfaSlabOne-Regular.ttf in Resources */,
 				408DF58124665F0D00B0597A /* Jura-VariableFont_wght.ttf in Resources */,
 			);
