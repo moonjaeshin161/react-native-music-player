@@ -98,7 +98,7 @@ const MiniPlayer = ({ list }) => {
                 else {
                     showMessage({
                         message: "Mini Player: No next song",
-                        type: "info",
+                        type: "warning",
                     });
                 }
             }
