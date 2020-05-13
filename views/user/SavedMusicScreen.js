@@ -6,8 +6,9 @@ import { moderateScale } from 'react-native-size-matters';
 import Spinner from 'react-native-loading-spinner-overlay';
 //firebase
 import firestore from '@react-native-firebase/firestore';
-import { } from 'react-native-gesture-handler';
+
 import MusicItem from '../../components/MusicItem';
+import I18n from '../../i18n';
 
 const SavedMusicScreen = () => {
 
@@ -70,7 +71,7 @@ const SavedMusicScreen = () => {
                 visible={isLoading}
                 textStyle={styles.spinnerTextStyle}
             />
-            <Text style={styles.title}>List music download</Text>
+            <Text style={styles.title}>{I18n.t('savedMusics')}</Text>
             <FlatList
                 data={savedMusics}
                 keyExtractor={item => item.id}

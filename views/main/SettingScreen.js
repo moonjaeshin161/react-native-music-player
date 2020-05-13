@@ -13,6 +13,7 @@ import auth from '@react-native-firebase/auth';
 
 import { signOutSuccess } from '../auth/AuthAction';
 import LanguageSelection from '../../components/LanguageSelection';
+import I18n from '../../i18n';
 
 const SettingScreen = () => {
 
@@ -22,13 +23,26 @@ const SettingScreen = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [language, setLanguage] = useState('vi');
 
+    useEffect(() => {
+        getCurrentLanguage();
+        console.log('Language: ', language)
+    }, [])
+
+    const getCurrentLanguage = async () => {
+        let currentLanguage = await AsyncStorage.getItem('language');
+        if (currentLanguage === null) {
+            currentLanguage = 'vi'
+        }
+        setLanguage(currentLanguage);
+    }
+
     const signoutHandler = async () => {
         auth()
             .signOut()
             .then(() => {
                 console.log('User signed out!')
                 dispatch(signOutSuccess());
-                RootNavigation.navigate('Home');
+                RootNavigation.navigate(I18n.t('home'));
             });
     }
 
@@ -59,22 +73,22 @@ const SettingScreen = () => {
             <ImageBackground resizeMode="cover" style={styles.background} source={SettingBackground} />
             <View style={styles.content}>
 
-                <Text style={styles.title}>Xin chào đến với app nghenhacretien </Text>
-                {!isLogin && <Text style={{ color: '#8E97A6', fontSize: moderateScale(13), fontWeight: '500' }}>Đăng nhập ngay để sử dụng đầy đủ tính năng nhất</Text>}
+                <Text style={styles.title}>{I18n.t('welcome')}</Text>
+                {!isLogin && <Text style={{ color: '#8E97A6', fontSize: moderateScale(13), fontWeight: '500' }}>{I18n.t('loginNotice')}</Text>}
                 <TouchableOpacity style={styles.optionButton} onPress={() => navigation.navigate('About')}>
-                    <Text style={styles.optionText}>Về chúng tôi</Text>
+                    <Text style={styles.optionText}>{I18n.t('aboutUs')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.optionButton} onPress={selectHandler}>
-                    <Text style={styles.optionText}>Ngôn ngữ</Text>
+                    <Text style={styles.optionText}>{I18n.t('language')}</Text>
                 </TouchableOpacity>
                 {
                     isLogin
                         ? <TouchableOpacity style={styles.optionButton} onPress={signoutHandler}>
-                            <Text style={styles.optionText}>Đăng xuất</Text>
+                            <Text style={styles.optionText}>{I18n.t('signOut')}</Text>
                         </TouchableOpacity>
                         : <>
                             <TouchableOpacity style={styles.optionButton} onPress={() => navigation.navigate('Login')}>
-                                <Text style={styles.optionText}>Đăng nhập</Text>
+                                <Text style={styles.optionText}>{I18n.t('login')}</Text>
                             </TouchableOpacity>
                         </>
                 }

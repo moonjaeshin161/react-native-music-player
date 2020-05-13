@@ -13,6 +13,7 @@ import storage from '@react-native-firebase/storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { updateUser } from './UserActions';
 import DefaultAvatar from '../../assets/images/default_avatar.png';
+import I18n from '../../i18n';
 
 const EditProfileScreen = () => {
     const user = useSelector(state => state.user.user);
@@ -125,22 +126,22 @@ const EditProfileScreen = () => {
 
     return (
         <View style={styles.container}>
+
             <Spinner
                 visible={isLoading}
             />
-            {console.log('User: ', user)}
 
             <View style={{ marginTop: moderateScale(64), alignItems: 'center' }}>
 
 
-                <Text style={{ fontSize: moderateScale(30), fontWeight: '600', fontFamily: 'BalooBhaina2-ExtraBold', color: '#3D425C' }}>Chỉnh sửa thông tin</Text>
+                <Text style={{ fontSize: moderateScale(30), fontWeight: '600', fontFamily: 'BalooBhaina2-ExtraBold', color: '#3D425C' }}>{I18n.t('editInfo')}</Text>
                 <TouchableOpacity style={[styles.avatarContainer, { marginTop: moderateScale(10) }]} onPress={pickImageHandler}>
                     <Image style={styles.avatar} source={imageURI} />
                 </TouchableOpacity>
 
                 <View style={[styles.section, { marginTop: moderateScale(25) }]}>
                     <View style={{ flexDirection: 'row', width: scale(200), alignItems: 'center', flex: 1 }}>
-                        <Text style={[styles.editText, { fontWeight: '500' }]}>Tên hiển thị : </Text>
+                        <Text style={[styles.editText, { fontWeight: '500' }]}>{I18n.t('displayName')} : </Text>
                         {
                             !isEdited
                                 ? <>
@@ -158,7 +159,7 @@ const EditProfileScreen = () => {
                                         placeholder={user.displayName}
                                     />
                                     <TouchableOpacity style={styles.cancelButton} onPress={() => setIsEdited(false)}>
-                                        <Text style={{ fontSize: moderateScale(12), color: 'gray' }}>Huỷ</Text>
+                                        <Text style={{ fontSize: moderateScale(12), color: 'white' }}>{I18n.t('cancel')}</Text>
                                     </TouchableOpacity>
                                 </>
                         }
@@ -167,10 +168,10 @@ const EditProfileScreen = () => {
 
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity onPress={editHandler} style={{ ...styles.optionButton, backgroundColor: '#1E90FF' }}>
-                        <Text style={{ color: 'white' }}>Xác nhận thay đổi</Text>
+                        <Text style={{ color: 'white' }}>{I18n.t('accept')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.goBack()} style={{ ...styles.optionButton, backgroundColor: '#FF7F50' }}>
-                        <Text style={{ color: 'white' }}>Hủy</Text>
+                        <Text style={{ color: 'white' }}>{I18n.t('cancel')}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -214,12 +215,15 @@ const styles = StyleSheet.create({
         paddingLeft: moderateScale(10),
     },
     cancelButton: {
-        flex: 2,
+        flex: 3,
+        paddingVertical: moderateScale(9),
+        paddingHorizontal: moderateScale(5),
         borderWidth: moderateScale(1),
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: moderateScale(5),
-        borderRadius: moderateScale(5)
+        borderRadius: moderateScale(5),
+        backgroundColor: '#555555'
     },
     optionButton: {
         justifyContent: 'center',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -12,6 +12,7 @@ import auth from '@react-native-firebase/auth';
 import * as RootNavigation from '../../navigations/RootNavigation';
 import { loginSuccess, loginFail } from './AuthAction';
 import { colors } from '../../configs/colors';
+import I18n from '../../i18n';
 
 const LoginScreen = () => {
 
@@ -35,8 +36,8 @@ const LoginScreen = () => {
                 console.log('User account signed in!');
                 dispatch(loginSuccess());
                 setIsLoading(false);
-                navigation.navigate('Setting');
-                RootNavigation.navigate('Home');
+                navigation.goBack();
+                RootNavigation.navigate(I18n.t('home'));
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
@@ -68,8 +69,8 @@ const LoginScreen = () => {
                 visible={isLoading}
                 textStyle={styles.spinnerTextStyle}
             />
-            <Text style={styles.title}>Đăng nhập</Text>
-            <Text style={styles.subTitle}>Đăng nhập bằng email và mật khẩu</Text>
+            <Text style={styles.title}>{I18n.t('login')}</Text>
+            <Text style={styles.subTitle}>{I18n.t('loginWith')}</Text>
             <View style={styles.content}>
                 <View style={styles.section}>
                     <MaterialIcons name="email" size={moderateScale(30)} />
@@ -83,16 +84,16 @@ const LoginScreen = () => {
                     <MaterialIcons name="lock-outline" size={moderateScale(30)} />
                     <TextInput
                         style={styles.textInput}
-                        placeholder='Password'
+                        placeholder={I18n.t('password')}
                         secureTextEntry
                         onChangeText={(value) => changeHandler(value, 'password')}
                     />
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                    <Text style={styles.smallTitle}>Chưa có tài khoản ư ? Đăng ký ngay thôi</Text>
+                    <Text style={styles.smallTitle}>{I18n.t('registerForNow')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.login} onPress={loginHandler}>
-                    <Text style={styles.loginButton}>Login</Text>
+                    <Text style={styles.loginButton}>{I18n.t('login')}</Text>
                 </TouchableOpacity>
             </View>
         </View>

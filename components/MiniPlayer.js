@@ -5,12 +5,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import TrackPlayer, { TrackPlayerEvents, STATE_PLAYING } from 'react-native-track-player';
 import Modal from 'react-native-modal';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
 import { showMessage } from "react-native-flash-message";
 
 import PlayerModal from '../views/musicPlayer/PlayerModal'
 import MiniThumbnail from '../assets/images/default_mini_thumbnail.png';
 import { setCurrentSong } from '../views/musicPlayer/PlayerActions';
+import I18n from '../i18n'
 
 const events = [
     TrackPlayerEvents.PLAYBACK_STATE,
@@ -22,9 +22,6 @@ const events = [
     TrackPlayerEvents.REMOTE_STOP,
     TrackPlayerEvents.PLAYBACK_QUEUE_ENDED
 ];
-
-const deviceWidth = ExtraDimensions.getRealWindowWidth();
-const deviceHeight = ExtraDimensions.getRealWindowHeight();
 
 const MiniPlayer = ({ list }) => {
 
@@ -138,8 +135,6 @@ const MiniPlayer = ({ list }) => {
         <TouchableOpacity style={styles.container} onPress={() => setIsVisible(true)}>
             <Modal
                 isVisible={isVisible}
-                deviceWidth={deviceWidth}
-                deviceHeight={deviceHeight}
                 style={{ margin: 0 }}
             >
                 <PlayerModal
@@ -160,8 +155,8 @@ const MiniPlayer = ({ list }) => {
             </Modal>
             <Image source={MiniThumbnail} style={styles.miniThumb} />
             <View style={styles.titleContainer}>
-                <Text style={styles.titleSong}>{title ? title : 'Song Name'}</Text>
-                <Text style={styles.titleArtist}>{artist ? artist : 'Unknown'}</Text>
+                <Text style={styles.titleSong}>{title ? title : I18n.t('songName')}</Text>
+                <Text style={styles.titleArtist}>{artist ? artist : I18n.t('unknown')}</Text>
             </View>
             <View style={styles.controlContainer}>
                 <Entypo name='controller-jump-to-start' style={{ marginLeft: moderateScale(7) }} size={moderateScale(35)} onPress={previousHandler} />

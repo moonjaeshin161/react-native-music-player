@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { verticalScale, scale, moderateScale } from 'react-native-size-matters';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import I18n from '../i18n';
 
 const LanguageSelection = ({ language, setLanguage, setIsModalVisible, confirmHandler }) => {
 
@@ -10,12 +11,12 @@ const LanguageSelection = ({ language, setLanguage, setIsModalVisible, confirmHa
         <View style={styles.container}>
 
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Lựa chọn ngôn ngữ</Text>
+                <Text style={styles.title}>{I18n.t('selectLanguage')}</Text>
             </View>
 
             <View style={styles.selectContainer}>
                 <TouchableOpacity style={{ ...styles.selectButton, marginBottom: moderateScale(10) }} onPress={() => setLanguage('en')}>
-                    <Text style={styles.textButton}>Tiếng Anh</Text>
+                    <Text style={styles.textButton}>{I18n.t('english')}</Text>
                     {
                         language === 'en' ?
                             <AntDesign name='checksquare' size={moderateScale(20)} style={{ marginLeft: moderateScale(10) }} />
@@ -23,7 +24,7 @@ const LanguageSelection = ({ language, setLanguage, setIsModalVisible, confirmHa
                     }
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.selectButton} onPress={() => setLanguage('vi')}>
-                    <Text style={styles.textButton}>Tiếng Việt</Text>
+                    <Text style={styles.textButton}>{I18n.t('vietnamese')}</Text>
                     {
                         language === 'vi' ?
                             <AntDesign name='checksquare' size={moderateScale(20)} style={{ marginLeft: moderateScale(10) }} />
@@ -34,15 +35,15 @@ const LanguageSelection = ({ language, setLanguage, setIsModalVisible, confirmHa
 
             <View style={styles.optionContainer}>
                 <TouchableOpacity style={{ ...styles.optionButton, backgroundColor: '#4CAF50' }} onPress={confirmHandler}>
-                    <Text style={{ color: 'white', fontWeight: '500' }}>Đồng ý thay đổi</Text>
+                    <Text style={{ color: 'white', fontWeight: '500' }}>{I18n.t('accept')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ ...styles.optionButton, backgroundColor: '#555555' }} onPress={() => setIsModalVisible(false)}>
-                    <Text style={{ color: 'white', fontWeight: '300' }}>Hủy</Text>
+                    <Text style={{ color: 'white', fontWeight: '300' }}>{I18n.t('cancel')}</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.alertContainer}>
-                <Text style={styles.alertText}>Lưu ý: App sẽ khởi động lại để áp dụng những thay đổi</Text>
+                <Text style={styles.alertText}>{I18n.t('alertChange')}</Text>
             </View>
 
         </View>
@@ -97,8 +98,8 @@ const styles = StyleSheet.create({
         marginLeft: moderateScale(5)
     },
     alertContainer: {
-        marginTop: moderateScale(8),
-        paddingHorizontal: moderateScale(5)
+        marginTop: moderateScale(22),
+        paddingHorizontal: moderateScale(5),
     },
     alertText: {
         fontSize: moderateScale(13),
