@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
+import I18n from '../../i18n';
 
 const AboutScreen = () => {
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ marginTop: moderateScale(10), alignItems: 'center' }}>
@@ -11,7 +13,7 @@ const AboutScreen = () => {
             <View style={styles.content}>
 
                 <Text style={styles.textDescription}>
-                    {'  App hỗ trợ người dùng nghe nhạc được lưu sẵn trong bộ nhớ máy cũng như lưu trữ những bài hát mình yêu thích online'}
+                    {I18n.t('description')}
                 </Text>
             </View>
 
