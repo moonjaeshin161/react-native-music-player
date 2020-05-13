@@ -50,8 +50,6 @@ target 'musicPlayerApp' do
 
   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
 
-  pod 'RNI18n', :path => '../node_modules/react-native-i18n'
-
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
