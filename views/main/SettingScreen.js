@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as RootNavigation from '../../navigations/RootNavigation';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNRestart from 'react-native-restart';
 //firebase
 import auth from '@react-native-firebase/auth';
 
@@ -37,7 +38,9 @@ const SettingScreen = () => {
 
     const confirmHandler = async () => {
         try {
-            await AsyncStorage.setItem('language', language)
+            await AsyncStorage.setItem('language', language);
+            RNRestart.Restart();
+
         } catch (e) {
             console.log('Error when saving to async storage: ', e)
         }
