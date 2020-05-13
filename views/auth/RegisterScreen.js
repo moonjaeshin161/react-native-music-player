@@ -13,6 +13,7 @@ import * as RootNavigation from '../../navigations/RootNavigation';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '../../configs/colors';
 import { registerSuccess, registerFail } from './AuthAction';
+import I18n from '../../i18n';
 
 const RegisterScreen = () => {
 
@@ -49,7 +50,7 @@ const RegisterScreen = () => {
                     setIsLoading(false);
                     dispatch(registerSuccess());
                     navigation.navigate('Setting');
-                    RootNavigation.navigate('Home');
+                    RootNavigation.navigate(I18n.t('home'));
                 })
 
             })
@@ -69,12 +70,7 @@ const RegisterScreen = () => {
                         type: "warning",
                     });
                 }
-                // else {
-                //     showMessage({
-                //         message: `Error occurs: ${error} `,
-                //         type: "warning",
-                //     });
-                // }
+
             });
     }
 
@@ -84,8 +80,8 @@ const RegisterScreen = () => {
                 visible={isLoading}
                 textStyle={styles.spinnerTextStyle}
             />
-            <Text style={styles.title}>Đăng ký</Text>
-            <Text style={styles.subTitle}>Đăng ký đơn giản với email và mật khẩu</Text>
+            <Text style={styles.title}>{I18n.t('register')}</Text>
+            <Text style={styles.subTitle}>{I18n.t('registerWith')}</Text>
             <View style={styles.content}>
                 <View style={styles.section}>
                     <MaterialIcons name="email" size={moderateScale(30)} />
@@ -99,7 +95,7 @@ const RegisterScreen = () => {
                     <MaterialIcons name="account-circle" size={moderateScale(30)} />
                     <TextInput
                         style={styles.textInput}
-                        placeholder='Tên hiển thị'
+                        placeholder={I18n.t('displayName')}
                         onChangeText={(value) => changeHandler(value, 'displayName')}
                     />
                 </View>
@@ -107,16 +103,16 @@ const RegisterScreen = () => {
                     <MaterialIcons name="lock-outline" size={moderateScale(30)} />
                     <TextInput
                         style={styles.textInput}
-                        placeholder='Mật khẩu'
+                        placeholder={I18n.t('password')}
                         secureTextEntry
                         onChangeText={(value) => changeHandler(value, 'password')}
                     />
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                    <Text style={styles.smallTitle}>Có tài khoản mà ! Vậy đăng nhập ngay nào</Text>
+                    <Text style={styles.smallTitle}>{I18n.t('loginForNow')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.register} onPress={registerHandler}>
-                    <Text style={styles.registerButton}>Đăng ký</Text>
+                    <Text style={styles.registerButton}>{I18n.t('register')}</Text>
                 </TouchableOpacity>
             </View>
         </View>

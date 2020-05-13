@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { verifyReadPermission } from '../musicPlayer/PlayerActions';
 import auth from '@react-native-firebase/auth';
 
+import I18n from '../../i18n';
 import { loginSuccess } from '../auth/AuthAction';
 import { setUser } from '../user/UserActions';
 
@@ -56,8 +57,8 @@ const HomeScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ marginTop: moderateScale(20), alignItems: 'center' }}>
-                <Text style={styles.title}>Bài tập lớn - App nghe nhạc</Text>
-                <Text style={styles.subTitle}>Các thành viên trong nhóm</Text>
+                <Text style={styles.title}>{I18n.t('introduction')}</Text>
+                <Text style={styles.subTitle}>{I18n.t('membersList')}</Text>
                 <View style={styles.listContainer}>
                     <Text style={styles.member}>Nguyễn Công Huynh</Text>
                     <Text style={styles.member}>Vũ Đăng Huy</Text>
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     title: {
-        fontSize: scale(23),
+        fontSize: scale(16),
         fontWeight: '600',
         fontFamily: 'AlfaSlabOne-Regular'
     },

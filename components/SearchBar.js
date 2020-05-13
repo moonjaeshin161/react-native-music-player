@@ -3,6 +3,7 @@ import { View, StyleSheet, TextInput, TouchableOpacity, Text, Keyboard } from 'r
 import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
 
 import { colors } from '../configs/colors';
+import I18n from '../i18n'
 
 const SearchBar = ({ setSortedList, list, setIsSearched }) => {
 
@@ -23,14 +24,14 @@ const SearchBar = ({ setSortedList, list, setIsSearched }) => {
         <View style={styles.container}>
 
             <TextInput
-                placeholder='Search music...'
+                placeholder={I18n.t('searchMusic')}
                 style={styles.textInput}
                 underlineColorAndroid='transparent'
                 value={input}
                 onChangeText={textChangeHandler} />
 
             <TouchableOpacity style={styles.button} onPress={pressHandler}>
-                <Text style={styles.textButton}>Hủy</Text>
+                <Text style={styles.textButton}>{I18n.t('cancel')}</Text>
             </TouchableOpacity>
 
         </View>

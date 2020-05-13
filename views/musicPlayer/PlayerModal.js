@@ -9,7 +9,9 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import DefaultThumbnail from '../../assets/images/default_thumbnail.jpg';
+import I18n from '../../i18n';
 
 const PlayerModal = (props) => {
 
@@ -66,16 +68,17 @@ const PlayerModal = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {console.log('Player state: ', playerState)}
+
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: moderateScale(24) }}>
                 <EvilIcons name='arrow-left' size={moderateScale(35)} style={{ paddingLeft: moderateScale(10) }} color='gray' onPress={() => setIsVisible(false)} />
-                <Text style={[styles.textLight, { fontSize: moderateScale(12) }]}>PLAYLIST</Text>
+                <Text style={[styles.textLight, { fontSize: moderateScale(12) }]}>{I18n.t('playlist')}</Text>
                 <EvilIcons name='navicon' size={moderateScale(35)} style={{ paddingRight: moderateScale(10) }} color='gray' onPress={() => setIsVisible(false)} />
             </View>
+
             <View style={{ alignItems: 'center' }}>
                 <View style={{ alignItems: 'center' }}>
                     <Text style={[styles.text, { fontSize: moderateScale(15), fontWeight: '500', marginTop: moderateScale(8) }]}>
-                        Thank you for using our app
+                        {I18n.t('thankyou')}
                     </Text>
                 </View>
 
@@ -86,10 +89,10 @@ const PlayerModal = (props) => {
 
             <View style={{ alignItems: 'center', marginTop: moderateScale(25) }}>
                 <Text style={[styles.textDark, { fontSize: moderateScale(20), fontWeight: '500' }]}>
-                    {currentSong.id ? currentSong.title : 'Song Title'}
+                    {currentSong.id ? currentSong.title : I18n.t('songName')}
                 </Text>
                 <Text style={[styles.text, { fontSize: moderateScale(16), marginTop: moderateScale(8) }]}>
-                    {currentSong.artist ? currentSong.artist : 'Unknown'}
+                    {currentSong.artist ? currentSong.artist : I18n.t('unknown')}
                 </Text>
             </View>
 

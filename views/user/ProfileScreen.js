@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, scale } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import DefaultAvatar from '../../assets/images/default_avatar.png';
+import I18n from '../../i18n';
 
 const ProfileScreen = () => {
     const user = useSelector(state => state.user.user);
@@ -18,15 +19,15 @@ const ProfileScreen = () => {
                 <View style={styles.avatarContainer}>
                     <Image style={styles.avatar} source={imageURI} />
                 </View>
-                <Text style={styles.displayName}>Lâu lắm mới thấy bạn đó, {user.displayName ? user.displayName : 'User'} à</Text>
+                <Text style={styles.displayName}>{I18n.t('welcomeBack')}, {user.displayName ? user.displayName : 'User'}</Text>
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                 <TouchableOpacity style={styles.optionContainer} onPress={() => navigation.navigate('Edit')}>
-                    <Text style={styles.optionText}>Chỉnh sửa thông tin</Text>
+                    <Text style={styles.optionText}>{I18n.t('editProfile')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.optionContainer} onPress={() => navigation.navigate('Saved Music')}>
-                    <Text style={styles.optionText}>Nhạc của tui</Text>
+                    <Text style={styles.optionText}>{I18n.t('myMusic')}</Text>
                 </TouchableOpacity>
             </View>
 

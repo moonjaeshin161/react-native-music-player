@@ -8,7 +8,7 @@ const AboutScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={{ marginTop: moderateScale(10), alignItems: 'center' }}>
-                <Text style={styles.title}>Về chúng tôi</Text>
+                <Text style={styles.title}>{I18n.t('aboutUs')}</Text>
             </View>
             <View style={styles.content}>
 

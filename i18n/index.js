@@ -14,7 +14,6 @@ const getLanguage = async () => {
 const setLanguage = async () => {
     const currentLanguage = await getLanguage();
     I18n.locale = currentLanguage;
-
 }
 
 setLanguage();

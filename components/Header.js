@@ -4,11 +4,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 
 import { colors } from '../configs/colors';
+import I18n from '../i18n';
 
 const Header = ({ setIsSearched }) => {
     return (
         <View style={styles.container} >
-            <Text style={styles.title}>Music Player</Text>
+            <Text style={styles.title}>{I18n.t('musicPlayer')}</Text>
             <AntDesign name='search1' size={moderateScale(30)} style={styles.icon} onPress={() => setIsSearched(true)} />
         </View>
     )
