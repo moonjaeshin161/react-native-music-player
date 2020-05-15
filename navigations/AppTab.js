@@ -8,7 +8,6 @@ import SettingStack from './SettingStack';
 import UserStack from './UserStack';
 
 import Entypo from 'react-native-vector-icons/Entypo'
-import I18n from '../i18n';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const Tab = createBottomTabNavigator();
@@ -16,11 +15,11 @@ const Tab = createBottomTabNavigator();
 const AppTab = () => {
 
     const isLogin = useSelector(state => state.auth.isLogin);
-    const [language, setLanguage] = useState('vi');
+    const [language, setLanguage] = useState();
 
     useEffect(() => {
         getCurrentLanguage();
-    }, [language]);
+    }, []);
 
     const getCurrentLanguage = async () => {
         let currentLanguage = await AsyncStorage.getItem('language');
