@@ -14,6 +14,7 @@ import auth from '@react-native-firebase/auth';
 import { signOutSuccess } from '../auth/AuthAction';
 import LanguageSelection from '../../components/LanguageSelection';
 import I18n from '../../i18n';
+import i18n from 'react-native-i18n'
 
 const SettingScreen = () => {
 
@@ -25,7 +26,6 @@ const SettingScreen = () => {
 
     useEffect(() => {
         getCurrentLanguage();
-        console.log('Language: ', language)
     }, [])
 
     const getCurrentLanguage = async () => {
