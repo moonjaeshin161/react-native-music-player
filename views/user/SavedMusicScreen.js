@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Platform, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, FlatList, Platform, Text, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { moderateScale } from 'react-native-size-matters';
@@ -7,8 +7,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 //firebase
 import firestore from '@react-native-firebase/firestore';
 
-import MusicItem from '../../components/MusicItem';
 import I18n from '../../i18n';
+import SavedMusicItem from '../../components/SavedMusicItem'
 
 const SavedMusicScreen = () => {
 
@@ -22,19 +22,11 @@ const SavedMusicScreen = () => {
         if (result === RESULTS.DENIED) {
             requestWritePermission();
         }
-        const subscriber = firestore()
-            .collection('Musics')
-            .doc(user.uid)
-            .onSnapshot({
-                includeMetadataChanges: true
-            }, (doc) => {
-                const data = doc.data();
-                if (data) {
-                    setSavedMusics(convertObjToArr(data));
-                }
-            });
-        return () => subscriber();
     }, [result]);
+
+    useEffect(() => {
+        loadOnlineMusics();
+    }, [])
 
     const checkWritePermission = async () => {
         let checkResult = await check(
@@ -44,6 +36,25 @@ const SavedMusicScreen = () => {
             })
         );
         await setResult(checkResult);
+    }
+
+    const loadOnlineMusics = async () => {
+        const musicsRef = firestore().collection('Musics');
+        const subcriber = musicsRef
+            .where('uid', '==', user.uid)
+            .onSnapshot(querySnapshot => {
+                querySnapshot.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        setSavedMusics(preMusics => [
+                            ...preMusics,
+                            change.doc.data()
+                        ])
+                    }
+                })
+
+            })
+
+        return () => subcriber();
     }
 
     const requestWritePermission = async () => {
@@ -56,15 +67,6 @@ const SavedMusicScreen = () => {
         await setResult(requestResult);
     }
 
-    const convertObjToArr = (object) => {
-        const listKey = Object.keys(object);
-        const newList = [];
-        for (let i = 0; i < listKey.length; i++) {
-            newList.push(object[i]);
-        }
-        return newList;
-    }
-
     return (
         <SafeAreaView style={styles.container}>
             <Spinner
@@ -74,8 +76,8 @@ const SavedMusicScreen = () => {
             <Text style={styles.title}>{I18n.t('savedMusics')}</Text>
             <FlatList
                 data={savedMusics}
-                keyExtractor={item => item.id}
-                renderItem={({ item }) => <MusicItem item={item} savedScreen='true' setIsLoading={setIsLoading} />}
+                keyExtractor={item => item.mid}
+                renderItem={({ item }) => <SavedMusicItem item={item} setIsLoading={setIsLoading} />}
             />
 
         </SafeAreaView>
