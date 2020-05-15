@@ -68,7 +68,7 @@ const ListMusicScreen = () => {
             }
         }).catch(errors => {
             showMessage({
-                message: `Error occurs when fetching music: ${error} `,
+                message: `Error occurs when fetching music: ${errors} `,
                 type: "warning",
             });
             setIsLoading(false);
