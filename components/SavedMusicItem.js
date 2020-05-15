@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import RNFetchBlob from 'rn-fetch-blob';
 import { showMessage } from "react-native-flash-message";
-//firebase
-import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { colors } from '../configs/colors';
 import { setCurrentSong } from '../views/musicPlayer/PlayerActions';
@@ -17,14 +15,12 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
 
     const dispatch = useDispatch();
     const isLogin = useSelector(state => state.auth.isLogin);
-    const user = useSelector(state => state.user.user);
 
     const pressHandler = async () => {
         await dispatch(setCurrentSong(item));
     }
 
     const downloadHandler = async () => {
-        setIsLoading(true)
         let dirs = RNFetchBlob.fs.dirs;
         RNFetchBlob
             .config({
@@ -54,6 +50,22 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
             })
     }
 
+    const downloadMusic = async () => {
+        setIsLoading(true);
+        let data = await AsyncStorage.getItem('list');
+        let index = await JSON.parse(data).findIndex(music => music.id === item.mid);
+        if (index !== -1) {
+            showMessage({
+                message: 'Musics already in your storage',
+                type: "warning",
+            });
+            setIsLoading(false);
+        }
+        else {
+            downloadHandler();
+        }
+    }
+
     return (
         <TouchableOpacity style={styles.container} onPress={pressHandler}>
 
@@ -64,7 +76,7 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
                     isLogin &&
                     <View style={styles.uploadContainer}>
 
-                        <AntDesign name='clouddownloado' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={downloadHandler} />
+                        <AntDesign name='clouddownloado' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={downloadMusic} />
 
                     </View>
                 }
