@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +18,7 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
     const dispatch = useDispatch();
     const isLogin = useSelector(state => state.auth.isLogin);
     const user = useSelector(state => state.user.user);
+    const [isUploaded, setIsUploaded] = useState(false);
 
     const pressHandler = async () => {
         await dispatch(setCurrentSong(item));
@@ -49,16 +50,14 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
                     .then(downloadURL => {
                         console.log('File available at: ', downloadURL);
                         const savedSong = {
-                            [item.id]: {
-                                title: item.title,
-                                downloadURL,
-                                id: item.id
-                            }
+                            title: item.title,
+                            downloadURL,
+                            mid: item.id,
+                            uid: user.uid
                         }
                         firestore()
                             .collection('Musics')
-                            .doc(user.uid)
-                            .update(savedSong)
+                            .add(savedSong)
                             .then(() => {
                                 showMessage({
                                     message: 'Upload success',
@@ -67,21 +66,8 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
                                 setIsLoading(false);
                             })
                             .catch(err => {
-                                if (err.code = 'firestore/not-found') {
-                                    firestore()
-                                        .collection('Musics')
-                                        .doc(user.uid)
-                                        .set(savedSong)
-                                        .then(() => {
-                                            showMessage({
-                                                message: 'Upload success',
-                                                type: "success",
-                                            });
-                                            setIsLoading(false);
-                                        })
-                                }
                                 showMessage({
-                                    message: `Error occurs: ${error} `,
+                                    message: `Error occurs: ${err} `,
                                     type: "warning",
                                 });
                             })
@@ -90,35 +76,29 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
         )
     }
 
-    const downloadHandler = async () => {
-        setIsLoading(true)
-        let dirs = RNFetchBlob.fs.dirs;
-        RNFetchBlob
-            .config({
-                fileCache: true,
-                path: dirs.DownloadDir + `/${item.title}.mp3`
-                // response data will be saved to this path if it has access right.
+    useEffect(() => {
+        checkExistMusic(user.uid, item.id)
+    }, [])
 
-            })
-            .fetch('GET', item.downloadURL, {
-                //some headers ..
-            })
-            .then((res) => {
-                showMessage({
-                    message: 'Download success',
-                    type: "success",
+    const checkExistMusic = async (uid, mid) => {
+        if (isLogin) {
+            setIsLoading(true);
+            const musicRef = firestore().collection('Musics');
+            musicRef
+                .where('uid', '==', uid)
+                .where('mid', '==', mid)
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.docs.length !== 0) {
+                        setIsUploaded(true);
+                        setIsLoading(false);
+                    }
+                })
+                .catch(err => {
+                    console.log('Error when check exist: ', err)
                 });
-                setIsLoading(false);
-                // the path should be dirs.DocumentDir + 'path-to-file.anything'
-                console.log('The file saved to ', res.path())
-            })
-            .catch(err => {
-                showMessage({
-                    message: 'Error occurs: ', err,
-                    type: "warning",
-                });
-                setIsLoading(false);
-            })
+
+        }
     }
 
     return (
@@ -131,8 +111,7 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
                     isLogin &&
                     <View style={styles.uploadContainer}>
                         {
-                            savedScreen
-                                ? <AntDesign name='clouddownloado' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={downloadHandler} />
+                            isUploaded ? <Text></Text>
                                 : <AntDesign name='upload' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={uploadHandler} />
                         }
 
