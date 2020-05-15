@@ -18,14 +18,13 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
     const dispatch = useDispatch();
     const isLogin = useSelector(state => state.auth.isLogin);
     const user = useSelector(state => state.user.user);
-    const [isUploaded, setIsUploaded] = useState(false);
+    const musicRef = firestore().collection('Musics');
 
     const pressHandler = async () => {
         await dispatch(setCurrentSong(item));
     }
 
     const uploadHandler = async () => {
-        setIsLoading(true);
         const fileExtension = await item.url.split('.').pop();
         const fileName = await `${item.title}.${fileExtension}`;
 
@@ -55,8 +54,7 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
                             mid: item.id,
                             uid: user.uid
                         }
-                        firestore()
-                            .collection('Musics')
+                        musicRef
                             .add(savedSong)
                             .then(() => {
                                 showMessage({
@@ -76,29 +74,28 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
         )
     }
 
-    useEffect(() => {
-        checkExistMusic(user.uid, item.id)
-    }, [])
+    const uploadMusic = async () => {
+        setIsLoading(true);
+        musicRef
+            .where('uid', '==', user.uid)
+            .where('mid', '==', item.id)
+            .get()
+            .then(querySnapshot => {
+                if (querySnapshot.docs.length === 0) {
+                    uploadHandler();
+                }
+                else {
+                    showMessage({
+                        message: 'Music has already upload',
+                        type: "warning",
+                    });
+                    setIsLoading(false);
+                }
+            })
+            .catch(err => {
+                console.log('Error when check exist: ', err)
+            });
 
-    const checkExistMusic = async (uid, mid) => {
-        if (isLogin) {
-            setIsLoading(true);
-            const musicRef = firestore().collection('Musics');
-            musicRef
-                .where('uid', '==', uid)
-                .where('mid', '==', mid)
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.docs.length !== 0) {
-                        setIsUploaded(true);
-                        setIsLoading(false);
-                    }
-                })
-                .catch(err => {
-                    console.log('Error when check exist: ', err)
-                });
-
-        }
     }
 
     return (
@@ -110,11 +107,7 @@ const MusicItem = ({ item, savedScreen, setIsLoading }) => {
                 {
                     isLogin &&
                     <View style={styles.uploadContainer}>
-                        {
-                            isUploaded ? <Text></Text>
-                                : <AntDesign name='upload' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={uploadHandler} />
-                        }
-
+                        <AntDesign name='upload' size={moderateScale(27)} style={styles.uploadButton} color='#B6B7BF' onPress={uploadMusic} />
                     </View>
                 }
             </View>
