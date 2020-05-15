@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
 
@@ -8,13 +8,26 @@ import SettingStack from './SettingStack';
 import UserStack from './UserStack';
 
 import Entypo from 'react-native-vector-icons/Entypo'
-import I18n from '../i18n';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Tab = createBottomTabNavigator();
 
 const AppTab = () => {
 
     const isLogin = useSelector(state => state.auth.isLogin);
+    const [language, setLanguage] = useState();
+
+    useEffect(() => {
+        getCurrentLanguage();
+    }, []);
+
+    const getCurrentLanguage = async () => {
+        let currentLanguage = await AsyncStorage.getItem('language');
+        if (currentLanguage === null) {
+            currentLanguage = 'vi';
+        }
+        await setLanguage(currentLanguage);
+    }
 
     return (
         <Tab.Navigator
@@ -22,13 +35,13 @@ const AppTab = () => {
                 tabBarIcon: ({ color, size }) => {
                     let iconName;
 
-                    if (route.name === I18n.t('home')) {
+                    if (route.name === 'Home' || route.name === 'Trang chủ') {
                         iconName = 'home'
-                    } else if (route.name === I18n.t('musicPlayer')) {
+                    } else if (route.name === 'Music Player' || route.name === 'Máy phát nhạc') {
                         iconName = 'folder-music';
-                    } else if (route.name === I18n.t('setting')) {
+                    } else if (route.name === 'Setting' || route.name === 'Cài đặt') {
                         iconName = 'cog';
-                    } else if (route.name === I18n.t('user')) {
+                    } else if (route.name === 'User' || route.name === 'Người dùng') {
                         iconName = 'user';
                     }
 
@@ -41,12 +54,12 @@ const AppTab = () => {
                 inactiveTintColor: 'gray',
             }}
         >
-            <Tab.Screen name={I18n.t('home')} component={HomeStack} />
-            <Tab.Screen name={I18n.t('musicPlayer')} component={MusicPlayerStack} />
+            <Tab.Screen name={(language === 'vi') ? 'Trang chủ' : 'Home'} component={HomeStack} />
+            <Tab.Screen name={(language === 'vi') ? 'Máy phát nhạc' : 'Music Player'} component={MusicPlayerStack} />
             {
-                isLogin && <Tab.Screen name={I18n.t('user')} component={UserStack} />
+                isLogin && <Tab.Screen name={(language === 'vi') ? 'Người dùng' : 'User'} component={UserStack} />
             }
-            <Tab.Screen name={I18n.t('setting')} component={SettingStack} />
+            <Tab.Screen name={(language === 'vi') ? 'Cài đặt' : 'Setting'} component={SettingStack} />
         </Tab.Navigator>
     )
 }
