@@ -21,6 +21,8 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
     }
 
     const downloadHandler = async () => {
+
+        setIsLoading(true);
         let dirs = RNFetchBlob.fs.dirs;
         RNFetchBlob
             .config({
@@ -51,7 +53,6 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
     }
 
     const downloadMusic = async () => {
-        setIsLoading(true);
         let data = await AsyncStorage.getItem('list');
         let index = await JSON.parse(data).findIndex(music => music.id === item.mid);
         if (index !== -1) {
@@ -59,7 +60,6 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
                 message: 'Musics already in your storage',
                 type: "warning",
             });
-            setIsLoading(false);
         }
         else {
             downloadHandler();
