@@ -44,22 +44,25 @@ const ListMusicScreen = () => {
         }
 
         MusicFiles.getAll(options).then(async (tracks) => {
-            if (tracks !== null) {
-                const musics = await tracks.map((music, index) => {
-                    if (!music.title) {
-                        let newTitle = (music.fileName.split('.')[0]).substring(0, 20);
-                        music.title = newTitle;
-                    }
-                    music.title = music.title.substring(0, 20);
-                    return { ...music, id: index.toString(), url: music.path, artist: music.author }
-                })
-                setList(musics);
-                setSortedList(musics);
-                setLoadList(true);
-                await AsyncStorage.setItem('list', JSON.stringify(musics));
-                setIsLoading(false);
+            if (tracks !== 'Something get wrong with musicCursor') {
+                if (tracks.length !== 0) {
+                    const musics = await tracks.map((music, index) => {
+                        if (!music.title) {
+                            let newTitle = (music.fileName.split('.')[0]).substring(0, 20);
+                            music.title = newTitle;
+                        }
+                        music.title = music.title.substring(0, 20);
+                        return { ...music, id: index.toString(), url: music.path, artist: music.author }
+                    })
+                    setList(musics);
+                    setSortedList(musics);
+                    setLoadList(true);
+                    await AsyncStorage.setItem('list', JSON.stringify(musics));
+                    setIsLoading(false);
+                }
             }
             else {
+                setList([]);
                 showMessage({
                     message: "There is no music file in your device",
                     type: "warning",
@@ -85,6 +88,11 @@ const ListMusicScreen = () => {
         setLoadList(true);
     }
 
+    const reloadHandler = () => {
+        AsyncStorage.removeItem('list');
+        fetchMusic();
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Spinner
@@ -92,7 +100,7 @@ const ListMusicScreen = () => {
                 textStyle={styles.spinnerTextStyle}
             />
             {
-                !isSearched ? <Header setIsSearched={setIsSearched} />
+                !isSearched ? <Header setIsSearched={setIsSearched} reloadHandler={reloadHandler} />
                     : <SearchBar setSortedList={setSortedList} list={list} setIsSearched={setIsSearched} />
             }
             <FlatList

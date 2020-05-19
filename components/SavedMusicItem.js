@@ -21,11 +21,14 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
     }
 
     const downloadHandler = async () => {
-        let dirs = RNFetchBlob.fs.dirs;
+
+        setIsLoading(true);
+        let path = RNFetchBlob.fs.dirs.DownloadDir;
         RNFetchBlob
             .config({
                 fileCache: true,
-                path: dirs.DownloadDir + `/${item.title}.mp3`
+                mediaScannable: true,
+                path: `${path}/${item.title}.mp3`
                 // response data will be saved to this path if it has access right.
 
             })
@@ -39,7 +42,7 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
                 });
                 setIsLoading(false);
                 // the path should be dirs.DocumentDir + 'path-to-file.anything'
-                console.log('The file saved to ', res.path())
+                console.log('The file saved to ', res.path());
             })
             .catch(err => {
                 showMessage({
@@ -51,15 +54,18 @@ const SavedMusicItem = ({ item, setIsLoading }) => {
     }
 
     const downloadMusic = async () => {
-        setIsLoading(true);
         let data = await AsyncStorage.getItem('list');
-        let index = await JSON.parse(data).findIndex(music => music.id === item.mid);
-        if (index !== -1) {
-            showMessage({
-                message: 'Musics already in your storage',
-                type: "warning",
-            });
-            setIsLoading(false);
+        if (data !== null) {
+            let index = await JSON.parse(data).findIndex(music => music.title === item.title);
+            if (index !== -1) {
+                showMessage({
+                    message: 'Musics already in your storage',
+                    type: "warning",
+                });
+            }
+            else {
+                downloadHandler();
+            }
         }
         else {
             downloadHandler();
