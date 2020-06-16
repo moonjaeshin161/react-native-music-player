@@ -37,6 +37,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Read media file permission</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
@@ -75,7 +77,5 @@
 		<string>Jura-VariableFont_wght.ttf</string>
 		<string>Pangolin-Regular.ttf</string>
 	</array>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Music Permission</string>
 </dict>
 </plist>
